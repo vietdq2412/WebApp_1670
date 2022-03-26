@@ -18,6 +18,20 @@ app.get('/', (req,res) => {
     res.render('index')
 })
 
+app.get('/shop', (req,res) => {
+    res.render('shop')
+})
+
+app.get('/detail', (req,res) => {
+    res.render('detail')
+})
+
+app.get('/cart', (req,res) => {
+    res.render('cart')
+})
+
+
+
 // const adminController = require('./controllers/adminController')
 // //tat ca dia chi chua /admin  => goi controller admin
 // app.use('/admin', adminController)
