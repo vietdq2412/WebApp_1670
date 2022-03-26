@@ -1,8 +1,14 @@
 const express = require('express')
 const app = express()
+const expressHbs = require('express-handlebars')
+const path = require('path')
 
+app.engine('hbs', expressHbs.engine({
+    extname: '.hbs'
+}) )
 app.set('view engine', 'hbs')
-app.use(express.static(__dirname + '/views'));
+app.set('views', path.join(__dirname + '/resources/views'));
+app.use(express.static(path.join(__dirname + '/resources/public')));
 
 app.use(express.urlencoded({
     extended:true
