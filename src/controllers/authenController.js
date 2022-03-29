@@ -17,10 +17,11 @@ router.post('/login', async (req, res) => {
     if (role == -1) {
         res.end('login invalid!');
     } else {
-        req.session.User = {
-            username: username,
-            role: role
-        }
+        req.session.User = "ádasd";
+        // req.session.User = {
+        //     username: username,
+        //     role: role
+        // }
         res.redirect('/')
     }
 })
