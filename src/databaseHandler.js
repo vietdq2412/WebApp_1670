@@ -1,6 +1,6 @@
 const {MongoClient,ObjectId} = require('mongodb');
 
-const URL = "mongodb+srv://web1670G1:123456!@cluster0.wpctp.mongodb.net/test";
+const URL = "mongodb+srv://ducanh1610:543694@cluster0.9rpbx.mongodb.net/test";
 const DATABASE_NAME = "GCH0902-ApplicationDev"
 
 async function getDB(){
