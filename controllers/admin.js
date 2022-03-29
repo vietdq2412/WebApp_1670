@@ -27,4 +27,22 @@ router.post('/register',(req,res)=>{
     res.render('home')
 })
 
+router.get('/addproduct',(req,res)=> {
+    res.render('addproduct')
+})
+
+router.post('/addproduct',(req,res)=>{
+    const productId = req.body.txtProductId
+    const name = req.body.txtName 
+    const price = req.body.txtPrice
+    const image = req.bogy.txtImage
+    const objectToInsert = {
+        productName : name,
+        price : price,
+        image : image
+    }
+    insertObject("Product",objectToInsert)
+    res.render('addproduct')
+})
+
 module.exports = router;
