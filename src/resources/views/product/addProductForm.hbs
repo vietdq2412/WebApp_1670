@@ -1,1 +1,18 @@
 <h1>Add product form</h1>asdsd
+
+
+    <form action="/product/add" method="post">
+        Book title:
+        <input type="text" name="txtName">
+        Price:
+        <input type="text" name="txtPrice">
+        Category:
+        <select name="txtCategory" id="">
+            {{#each categories}}
+            <option value="{{_id}}">{{name}}</option>
+            {{/each}}
+        </select>
+        Image:
+        <input type="text" name="txtImage">
+        <button>Add</button>
+    </form>
