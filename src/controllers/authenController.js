@@ -43,8 +43,7 @@ router.post('/register', (req, res) => {
 
     insertObject(USERTABLE, objectToInsert);
 
-    res.render('index')
-})
+    res.redirect('/authen/login')});
 ////////////////////
 
 module.exports = router;
