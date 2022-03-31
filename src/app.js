@@ -11,6 +11,8 @@ app.engine('hbs', expressHbs.engine({
 app.set('view engine', 'hbs')
 app.set('views', path.join(__dirname + '/resources/views'));
 
+
+
 app.use(express.static(path.join(__dirname + '/resources/public')));
 
 app.use(express.urlencoded({
@@ -35,7 +37,13 @@ app.use('/authen', authenController, express.static(path.join(__dirname, '/resou
 ////////////Product
 const productController = require('./controllers/productController')
 //tat ca dia chi chua /authen  => goi controller authen
-app.use('/product', authenController, express.static(path.join(__dirname, '/resources/public')));
+app.use('/product', productController, express.static(path.join(__dirname, '/resources/public')));
+///////////////////
+
+////////////Category
+const categoryController = require('./controllers/categoryController')
+//tat ca dia chi chua /authen  => goi controller authen
+app.use('/category', categoryController, express.static(path.join(__dirname, '/resources/public')));
 ///////////////////
 
 

@@ -3,7 +3,7 @@ const router = express.Router()
 const { insertObject, checkUserRole } = require('../databaseHandler')
 
 router.get('/add', (req, res) => {
-    res.render('test')
+    res.render('product/addProductForm')
 })
 
 module.exports = router;

@@ -15,6 +15,14 @@ async function insertObject(collectionName,objectToInsert){
     console.log("Gia tri id moi duoc insert la: ", newObject.insertedId.toHexString());
 }
 
+async function search(condition, collectionName) {
+    const dbo = await getDB();
+    const searchCondition = new RegExp(condition, 'i')
+    var results = await dbo.collection(collectionName).
+    find({ name: searchCondition }).toArray();
+    return results;
+}
+
 async function checkUserRole(username, password){
     const dbo = await getDB();
     const user = await dbo.collection(USERTABLE).findOne({username:username, password:password});
@@ -27,5 +35,11 @@ async function checkUserRole(username, password){
     
 }
 
-const USERTABLE = 'Users'
-module.exports = {insertObject, checkUserRole, USERTABLE}
+const USERTABLE = 'Users';
+const CATEGORY_TABLE = 'Category';
+const PRODUCT_TABLE = 'Product';
+const ORDER_TABLE = 'Order';
+
+
+
+module.exports = {insertObject, checkUserRole, search, USERTABLE, CATEGORY_TABLE, PRODUCT_TABLE, ORDER_TABLE}
