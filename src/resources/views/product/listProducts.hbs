@@ -8,6 +8,8 @@
             <th>Image</th>
             <th>Category</th>
             <th>Delete</th>
+            <th>Detail</th>
+
         </tr>
     </thead>
     <tbody>
@@ -19,6 +21,8 @@
             <td>{{category}}</td>
 
             <td><a href="/delete?id={{_id}}" onclick="return confirm('Are you sure?')">Delete</a></td>
+            <td><a href="product/detail?id={{_id}}">Detail</a></td>
+
         </tr>
         {{/each}}
     </tbody>

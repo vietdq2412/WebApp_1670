@@ -17,9 +17,17 @@ async function insertObject(collectionName,objectToInsert){
 
 async function search(condition, collectionName) {
     const dbo = await getDB();
-    const searchCondition = new RegExp(condition, 'i')
+    //const searchCondition = new RegExp(condition, 'i')
     var results = await dbo.collection(collectionName).
-    find({ name: searchCondition }).toArray();
+    find(condition).toArray();
+    return results;
+}
+
+async function searchOne(condition, collectionName) {
+    const dbo = await getDB();
+    //const searchCondition = new RegExp(condition, 'i')
+    var results = await dbo.collection(collectionName).
+    findOne(condition);
     return results;
 }
 
@@ -42,4 +50,4 @@ const ORDER_TABLE = 'Order';
 
 
 
-module.exports = {insertObject, checkUserRole, search, USERTABLE, CATEGORY_TABLE, PRODUCT_TABLE, ORDER_TABLE}
+module.exports = {insertObject, checkUserRole, search, searchOne, USERTABLE, CATEGORY_TABLE, PRODUCT_TABLE, ORDER_TABLE}

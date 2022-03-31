@@ -46,6 +46,12 @@ const categoryController = require('./controllers/categoryController')
 app.use('/category', categoryController, express.static(path.join(__dirname, '/resources/public')));
 ///////////////////
 
+////////////Order
+const orderController = require('./controllers/orderController')
+//tat ca dia chi chua /authen  => goi controller authen
+app.use('/order', orderController, express.static(path.join(__dirname, '/resources/public')));
+///////////////////
+
 
 app.get('/', (req,res) => {
     res.render('index')
@@ -55,9 +61,7 @@ app.get('/shop', (req,res) => {
     res.render('shop')
 })
 
-app.get('/detail', (req,res) => {
-    res.render('detail')
-})
+
 
 app.get('/cart', (req,res) => {
     res.render('cart')
@@ -66,7 +70,6 @@ app.get('/cart', (req,res) => {
 app.get('/checkout', (req,res) => {
     res.render('checkout')
 })
-
 
 
 
