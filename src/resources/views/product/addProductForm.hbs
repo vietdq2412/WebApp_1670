@@ -1,12 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>Add product form</h1>
-</body>
-</html>
+<h1>Add product form</h1>asdsd
+
+
+    <form action="/product/add" method="post">
+        Book title:
+        <input type="text" name="txtName">
+        Price:
+        <input type="text" name="txtPrice">
+        Category:
+        <select name="txtCategory" id="">
+            {{#each categories}}
+            <option value="{{_id}}">{{name}}</option>
+            {{/each}}
+        </select>
+        Image:
+        <input type="text" name="txtImage">
+        <button>Add</button>
+    </form>
