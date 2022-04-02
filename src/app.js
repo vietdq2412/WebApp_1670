@@ -63,10 +63,6 @@ app.get('/shop', (req,res) => {
 
 
 
-app.get('/cart', (req,res) => {
-    res.render('cart')
-})
-
 app.get('/checkout', (req,res) => {
     res.render('checkout')
 })

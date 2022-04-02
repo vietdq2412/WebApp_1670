@@ -55,12 +55,6 @@ router.get('/detail', async (req, res) => {
 
 
 /////order
-router.get('/order', (req, res) => {
-    const id = req.query.id;
-    console.log("oder id: ", id);
 
-    console.log('order id', id)
-    res.redirect('/order/addToCart?id='+id);
-})
 
 module.exports = router;
