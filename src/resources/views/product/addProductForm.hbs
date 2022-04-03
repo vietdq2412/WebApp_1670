@@ -1,18 +1,49 @@
-<h1>Add product form</h1>asdsd
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="css/admin.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+	<div class="panel">
+		<div class="heading">
+			Input product detail information
+		</div>
+		<div class="body">
+			<form method="post" action="/product/add">
+				<div class="form-group">
+					<label>Product Name:</label>
+					<input class="form-control" type="text" name="txtName" placeholder="Enter product name">
+				</div>
+				<div class="form-group">
+					<label >Category Name:</label>
+					<select class="form-control" name="txtCategory" id="" >
+                        {{#each categories}}
+                        <option value="{{_id}}">{{name}}</option>
+                        {{/each}}
+					</select>
+				</div>
+				<div class="form-group">
+					<label>Price:</label>
+					<input class="form-control" type="text" name="txtPrice" placeholder="Enter price" value="0"">
+				</div>
+                <div class="form-group">
+                    <label>Image:</label>
+                    <input type="text" class="form-control" name="txtImage" placeholder="Image link">
+                </div>
+				<div class="form-group">
+					<button class="btn btn-success" type="submit" value="Add Product">Add Produce</button>
+					<button class="btn btn-danger" type="reset">Reset</button>
+				</div>
+			</form>
+		</div>
+	</div>
+	</div>
+</body>
+</html>
 
-
-    <form action="/product/add" method="post">
-        Book title:
-        <input type="text" name="txtName">
-        Price:
-        <input type="text" name="txtPrice">
-        Category:
-        <select name="txtCategory" id="">
-            {{#each categories}}
-            <option value="{{_id}}">{{name}}</option>
-            {{/each}}
-        </select>
-        Image:
-        <input type="text" name="txtImage">
-        <button>Add</button>
-    </form>
+    
