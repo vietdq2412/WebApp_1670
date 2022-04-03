@@ -6,7 +6,12 @@ const router = express.Router()
 
 router.get('/cart', async (req, res) => {
     const orderList = await search('', ORDER_TABLE);
-    res.render('cart', {orderList:orderList});
+    res.render('order/cart', {orderList:orderList});
+})
+
+router.get('/delete', async (req, res) => {
+    const orderList = await search('', ORDER_TABLE);
+    res.render('order/cart', {orderList:orderList});
 })
 
 router.get('/addToCart', async (req, res) => {
