@@ -1,3 +1,4 @@
+const async = require('hbs/lib/async');
 const {MongoClient,ObjectId} = require('mongodb');
 
 const URL = "mongodb+srv://ducanh1610:543694@cluster0.9rpbx.mongodb.net/test";
@@ -31,6 +32,12 @@ async function searchOne(condition, collectionName) {
     return results;
 }
 
+async function getProductById(collectionName,id){
+    let client = await MongoClient.connect(URL)
+    let dbo = client.db(DATABASE_NAME)
+    await dbo.collection(collectionName).findOne({_id:ObjectId(id)})
+}
+
 async function checkUserRole(username, password){
     const dbo = await getDB();
     const user = await dbo.collection(USERTABLE).findOne({username:username, password:password});
@@ -50,4 +57,4 @@ const ORDER_TABLE = 'Order';
 
 
 
-module.exports = {insertObject, checkUserRole, search, searchOne, USERTABLE, CATEGORY_TABLE, PRODUCT_TABLE, ORDER_TABLE}
+module.exports = {insertObject, checkUserRole, search,getProductById, searchOne, USERTABLE, CATEGORY_TABLE, PRODUCT_TABLE, ORDER_TABLE}

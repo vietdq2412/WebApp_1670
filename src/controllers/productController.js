@@ -41,6 +41,11 @@ router.post('/add', (req, res) => {
     insertObject(PRODUCT_TABLE, objectToInsert);
     res.redirect('/product')
 })
+///edit 
+router.get('/edit', async (req, res) => {
+    const categories = await search('', CATEGORY_TABLE);
+    res.render('product/editProductForm', {categories:categories})
+})
 
 ///detail
 router.get('/detail', async (req, res) => {
