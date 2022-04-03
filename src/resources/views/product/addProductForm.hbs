@@ -16,11 +16,11 @@
 		<div class="body">
 			<form method="post" action="/product/add">
 				<div class="form-group">
-					<label>Product Name:</label>
+					<label>Product Name :</label>
 					<input class="form-control" type="text" name="txtName" placeholder="Enter product name">
 				</div>
 				<div class="form-group">
-					<label >Category Name:</label>
+					<label >Category Name :</label>
 					<select class="form-control" name="txtCategory" id="" >
                         {{#each categories}}
                         <option value="{{_id}}">{{name}}</option>
@@ -28,7 +28,7 @@
 					</select>
 				</div>
 				<div class="form-group">
-					<label>Price:</label>
+					<label>Price :</label>
 					<input class="form-control" type="text" name="txtPrice" placeholder="Enter price" value="0"">
 				</div>
                 <div class="form-group">
