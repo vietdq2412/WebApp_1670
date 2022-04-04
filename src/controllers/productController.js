@@ -1,4 +1,5 @@
 const express = require('express');
+const req = require('express/lib/request');
 const async = require('hbs/lib/async');
 const router = express.Router()
 const { insertObject, checkUserRole, search, PRODUCT_TABLE, CATEGORY_TABLE, searchOne } = require('../databaseHandler')
@@ -18,7 +19,12 @@ router.get('/', async (req, res) => {
     console.log(products);
     res.render('product/listProducts', { products: products})
 })
-
+///show products
+router.get('',async(req,res)=>{
+    const products = await search('',PRODUCT_TABLE);
+    console.log(products);
+    res.render('/shop',{products: products})
+})
 
 ///add product
 router.get('/add', async (req, res) => {
