@@ -31,14 +31,14 @@ async function searchOne(condition, collectionName) {
     return results;
 }
 
-async function checkUserRole(username, password){
+async function getUser(username, password){
     const dbo = await getDB();
     const user = await dbo.collection(USERTABLE).findOne({username:username, password:password});
     if(user == null){
         return -1;
     }else{
         console.log(user);
-        return user.role;
+        return user;
     }
     
 }
@@ -47,7 +47,9 @@ const USERTABLE = 'Users';
 const CATEGORY_TABLE = 'Category';
 const PRODUCT_TABLE = 'Product';
 const ORDER_TABLE = 'Order';
+const ORDERDETAIL_TABLE = 'Order';
 
 
 
-module.exports = {insertObject, checkUserRole, search, searchOne, USERTABLE, CATEGORY_TABLE, PRODUCT_TABLE, ORDER_TABLE}
+
+module.exports = {insertObject, getUser, search, searchOne, USERTABLE, CATEGORY_TABLE, PRODUCT_TABLE, ORDER_TABLE, ORDERDETAIL_TABLE}
