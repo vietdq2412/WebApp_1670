@@ -32,6 +32,17 @@ async function searchOne(condition, collectionName) {
     return results;
 }
 
+async function getUser(username, password){
+    const dbo = await getDB();
+    const user = await dbo.collection(USERTABLE).findOne({username:username, password:password});
+    if(user == null){
+        return -1;
+    }else{
+        console.log(user);
+        return user;
+    }
+}
+
 async function deleteProductById(collectionName,id){
     let client = await MongoClient.connect(URL)
     let dbo = client.db(DATABASE_NAME)
@@ -51,16 +62,18 @@ async function checkUserRole(username, password){
         return -1;
     }else{
         console.log(user);
-        return user.role;
+        return user;
     }
-    
 }
 
 const USERTABLE = 'Users';
 const CATEGORY_TABLE = 'Category';
 const PRODUCT_TABLE = 'Product';
 const ORDER_TABLE = 'Order';
+const ORDERDETAIL_TABLE = 'OrderDetail';
 
 
 
-module.exports = {insertObject, checkUserRole, search , deleteProductById , getProductById, searchOne, USERTABLE, CATEGORY_TABLE, PRODUCT_TABLE, ORDER_TABLE}
+module.exports = {insertObject, checkUserRole, getUser, search , deleteProductById,
+     getProductById, searchOne, USERTABLE, CATEGORY_TABLE, PRODUCT_TABLE, ORDER_TABLE, ORDERDETAIL_TABLE};
+

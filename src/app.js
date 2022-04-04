@@ -59,6 +59,23 @@ app.get('/', (req,res) => {
     res.render('index')
 })
 
+app.get('/test', (req,res) => {
+    let id = req.session.userId;
+    let name = req.session.username;
+    let role = req.session.role
+
+    console.log(id)
+    console.log(name)
+    console.log(role)
+
+    let user = {
+        id : id,
+        username: name,
+        role: role
+    }
+    res.render('test', {user:user})
+})
+
 app.get('/shop', (req,res) => {
     res.render('shop')
 })
