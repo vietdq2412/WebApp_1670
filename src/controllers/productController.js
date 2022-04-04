@@ -28,19 +28,23 @@ router.get('/add', async (req, res) => {
 
 router.post('/add', (req, res) => {
     const name = req.body.txtName;
+    const category = req.body.txtCategory;
     const price = req.body.txtPrice;
     const image = req.body.txtImage;
-    const category = req.body.txtCategory;
-
 
     objectToInsert = {
         name: name,
+        category:category,
         price: price,
         image:image,
-        category:category
     }
     insertObject(PRODUCT_TABLE, objectToInsert);
     res.redirect('/product')
+})
+///edit 
+router.get('/edit', async (req, res) => {
+    const categories = await search('', CATEGORY_TABLE);
+    res.render('product/editProductForm', {categories:categories})
 })
 
 ///detail
