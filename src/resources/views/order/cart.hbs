@@ -32,37 +32,56 @@
                     </thead>
                     <tbody class="align-middle">
                         {{#each orderList }}
-                        <tr onload="multi('{{_id}}',{{product.price}},{{quantity}})">
+                        <tr>
                             <td><img src="{{product.image}}" alt="" style="width: 50px;"></td>
                             <td class="align-middle">{{product.name}}</td>
                             <td class="align-middle">${{product.price}}</td>
                             <td class="align-middle">
                                 <div class="input-group quantity mx-auto" style="width: 100px;">
                                     <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-minus">
+                                        <button class="btn btn-sm btn-primary btn-minus" onclick="qt_update('{{_id}}','minus')">
                                             <i class="fa fa-minus"></i>
                                         </button>
                                     </div>
-                                    <input type="text" class="form-control form-control-sm bg-secondary text-center"
+                                    <input id="qt{{_id}}" type="text"
+                                        class="form-control form-control-sm bg-secondary text-center"
                                         value="{{quantity}}">
-                                    <div class="input-group-btn">
+                                    <div class="input-group-btn" onclick="qt_update('{{_id}}','plus')">
                                         <button class="btn btn-sm btn-primary btn-plus">
                                             <i class="fa fa-plus"></i>
                                         </button>
                                     </div>
                                 </div>
                             </td>
-                            <td class="align-middle" id="{{_id}}" onclick="multi('{{_id}}',{{product.price}},{{quantity}})">$</td>
-                            <td class="align-middle"><a href="/delete"><button class="btn btn-sm btn-primary"><i
-                                        class="fa fa-times"></i></button></a></td>
+                            <td class="align-middle" id="{{_id}}" onclick="multi('{{_id}}',{{product.price}})">$</td>
+                            <td class="align-middle"><button onclick="redirectW_id('{{_id}}')"
+                                    class="btn btn-sm btn-primary"><i class="fa fa-times"></i></button></td>
                         </tr>
+                        {{!-- <h1>d{{sum 1 2}}</h1> --}}
                         {{/each}}
                         <script>
-                            function multi(id, a, b){
+                            function multi(id, a) {
                                 alert(1)
                                 console.log(id)
-                                document.getElementById(id).innerHTML=a*b
+                                let b = document.getElementById('qt' + id).value;
+                                document.getElementById(id).innerHTML = a * b
+                            };
+
+                            function redirectW_id(id) {
+                                let confirm = window.confirm("Are you sure?");
+                                if (confirm) {
+                                    window.location.href = "/order/delete?id=" + id;
+                                }
+                            };
+
+                            function qt_update(id, action) {
+                                alert(1)
+                                path = "/order/edit?id=" + id +"&action=" + action;
+                                window.location.href = path;
+
                             }
+
+
                         </script>
                     </tbody>
                 </table>
@@ -95,7 +114,8 @@
                             <h5 class="font-weight-bold">Total</h5>
                             <h5 class="font-weight-bold">$160</h5>
                         </div>
-                        <a href="order/checkout"><button class="btn btn-block btn-primary my-3 py-3">Proceed To Checkout</button></a>
+                        <a href="order/checkout"><button class="btn btn-block btn-primary my-3 py-3">Proceed To
+                                Checkout</button></a>
                     </div>
                 </div>
             </div>

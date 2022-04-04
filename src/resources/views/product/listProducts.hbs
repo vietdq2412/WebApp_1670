@@ -9,6 +9,8 @@
             <th>Category</th>
             <th>Delete</th>
             <th>Edit</th>
+            <th>Detail</th>
+
 
         </tr>
     </thead>
@@ -22,7 +24,7 @@
 
             <td><a href="/delete?id={{_id}}" onclick="return confirm('Are you sure?')">Delete</a></td>
             <td><a href="product/edit?id={{_id}}">Edit</a></td>
-
+            <td><a href="product/detail?id={{_id}}">Detail</a></td>
         </tr>
         {{/each}}
     </tbody>

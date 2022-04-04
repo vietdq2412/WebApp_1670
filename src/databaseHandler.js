@@ -43,6 +43,19 @@ async function getUser(username, password){
     }
 }
 
+async function deleteObjectById(collectionName,id){
+    let client = await MongoClient.connect(URL)
+    let dbo = client.db(DATABASE_NAME)
+    await dbo.collection(collectionName).deleteOne({_id:ObjectId(id)});
+    console.log("deleted id: ", id)
+}
+
+async function updateObject(condition, collectionName, item){
+    let client = await MongoClient.connect(URL)
+    let dbo = client.db(DATABASE_NAME)
+    await dbo.collection(collectionName).updateOne(condition, item);
+}
+
 async function deleteProductById(collectionName,id){
     let client = await MongoClient.connect(URL)
     let dbo = client.db(DATABASE_NAME)
@@ -74,6 +87,6 @@ const ORDERDETAIL_TABLE = 'OrderDetail';
 
 
 
-module.exports = {insertObject, checkUserRole, getUser, search , deleteProductById,
+module.exports = {insertObject, checkUserRole, getUser, search , deleteProductById, deleteObjectById, updateObject,
      getProductById, searchOne, USERTABLE, CATEGORY_TABLE, PRODUCT_TABLE, ORDER_TABLE, ORDERDETAIL_TABLE};
 
