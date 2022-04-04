@@ -15,14 +15,14 @@
 		</div>
 		<div class="body">
 			<form method="post" action="/product/edit">
-            <input type="hidden" name="txtId" value="{{_id}}">
+            <input type="hidden" name="txtId" value="{{product._id}}">
 				<div class="form-group">
 					<label>Product Name :</label>
-					<input class="form-control" type="text" name="txtName" value="{{name}}" placeholder="Enter product name">
+					<input class="form-control" type="text" name="txtName" value="{{product.name}}">
 				</div>
 				<div class="form-group">
 					<label >Category Name :</label>
-					<select class="form-control" name="txtCategory"  id="{{categories}}" >
+					<select class="form-control" name="txtCategory"  id="{{product.categories}}" >
                         {{#each categories}}
                         <option value="{{_id}}">{{name}}</option>
                         {{/each}}
@@ -30,11 +30,11 @@
 				</div>
 				<div class="form-group">
 					<label>Price :</label>
-					<input class="form-control" type="text" name="txtPrice" placeholder="Enter price" value="{{price}}"">
+					<input class="form-control" type="text" name="txtPrice" value="{{product.price}}">
 				</div>
                 <div class="form-group">
-                    <label>Image:</label>
-                    <input type="text" class="form-control" name="txtImage" value="{{image}}" placeholder="Image link">
+                    <label>Image :</label>
+                    <input type="text" class="form-control" name="txtImage" value="{{product.image}}">
                 </div>
 				<div class="form-group">
 					<button class="btn btn-success" type="submit" value="Insert">Edit Product</button>

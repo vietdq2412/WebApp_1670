@@ -49,7 +49,7 @@ app.use('/category', categoryController, express.static(path.join(__dirname, '/r
 ////////////Order
 const orderController = require('./controllers/orderController')
 const async = require('hbs/lib/async')
-const { getProductById } = require('./databaseHandler')
+const { getProductById, deleteProductById } = require('./databaseHandler')
 //tat ca dia chi chua /authen  => goi controller authen
 app.use('/order', orderController, express.static(path.join(__dirname, '/resources/public')));
 ///////////////////
@@ -62,13 +62,20 @@ app.get('/', (req,res) => {
 app.get('/shop', (req,res) => {
     res.render('shop')
 })
+///delete
+app.get('/delete', async(req,res)=>{
+    const id = req.query.id
+    const collectionName ='Product'
+    await deleteProductById(collectionName,id)
+    res.redirect('product')
+})
 
-app.get('/edit',async(req,res)=>{
+app.get('/product/edit',async(req,res)=>{
     const id = req.query.id
     const collectionName = 'Product'
-    const product = await getProductById(collectionName,id)
-    console.log(product)
-    res.render('edit',{product:product})
+    const document = await getProductById(collectionName,id)
+    console.log(document)
+    res.render('edit',{product:document})
 
 })
 
