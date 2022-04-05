@@ -51,7 +51,7 @@ router.get('/addToCart', async (req, res) => {
         quantity: quantity,
     }
 
-    insertObject(ORDERDETAIL_TABLE, object);
+    await insertObject(ORDERDETAIL_TABLE, object);
     res.redirect('/order/cart')
 })
 

@@ -32,19 +32,23 @@ router.get('/add', async (req, res) => {
     res.render('product/addProductForm', {categories:categories})
 })
 
-router.post('/add', (req, res) => {
+router.post('/add', async (req, res) => {
     const name = req.body.txtName;
-    const category = req.body.txtCategory;
+    const categoryId = req.body.txtCategory;
     const price = req.body.txtPrice;
     const image = req.body.txtImage;
 
+    var ObjectID = require('mongodb').ObjectID;
+    const condition = { "_id": ObjectID(categoryId) };
+
+    const category = await searchOne(condition, CATEGORY_TABLE);
     objectToInsert = {
         name: name,
         category:category,
         price: price,
         image:image,
     }
-    insertObject(PRODUCT_TABLE, objectToInsert);
+    await insertObject(PRODUCT_TABLE, objectToInsert);
     res.redirect('/product')
 })
 ///edit 

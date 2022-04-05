@@ -39,7 +39,8 @@
                             <td class="align-middle">
                                 <div class="input-group quantity mx-auto" style="width: 100px;">
                                     <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-primary btn-minus" onclick="qt_update('{{_id}}','minus')">
+                                        <button class="btn btn-sm btn-primary btn-minus"
+                                            onclick="qt_update('{{_id}}','minus')">
                                             <i class="fa fa-minus"></i>
                                         </button>
                                     </div>
@@ -58,6 +59,7 @@
                                     class="btn btn-sm btn-primary"><i class="fa fa-times"></i></button></td>
                         </tr>
                         {{!-- <h1>d{{sum 1 2}}</h1> --}}
+
                         {{/each}}
                         <script>
                             function multi(id, a) {
@@ -76,7 +78,7 @@
 
                             function qt_update(id, action) {
                                 alert(1)
-                                path = "/order/edit?id=" + id +"&action=" + action;
+                                path = "/order/edit?id=" + id + "&action=" + action;
                                 window.location.href = path;
 
                             }
@@ -99,6 +101,16 @@
                     <div class="card-header bg-secondary border-0">
                         <h4 class="font-weight-semi-bold m-0">Cart Summary</h4>
                     </div>
+                    {{#each orderList }}
+                        
+                    {{/each}}
+                    <script>
+                        let subtotal = 0;
+                        subtotal({{orderlist}})
+                        function subtotal() {
+
+                        }
+                    </script>
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-3 pt-1">
                             <h6 class="font-weight-medium">Subtotal</h6>
