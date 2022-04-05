@@ -45,6 +45,4 @@ router.post('/register', (req, res) => {
 
     res.redirect('/authen/login')});
 ////////////////////
-
-
 module.exports = router;

@@ -24,6 +24,12 @@ async function search(condition, collectionName) {
     return results;
 }
 
+async function getProduct(collectionName){
+    let client = await MongoClient.connect(URL)
+    let dbo = client.db(DATABASE_NAME)
+    return await dbo.collection(collectionName).find({}).toArray()
+}
+
 async function searchOne(condition, collectionName) {
     const dbo = await getDB();
     //const searchCondition = new RegExp(condition, 'i')
@@ -87,6 +93,6 @@ const ORDERDETAIL_TABLE = 'OrderDetail';
 
 
 
-module.exports = {insertObject, checkUserRole, getUser, search , deleteProductById, deleteObjectById, updateObject,
+module.exports = {insertObject, checkUserRole, getUser, search , getProduct , deleteProductById, deleteObjectById, updateObject,
      getProductById, searchOne, USERTABLE, CATEGORY_TABLE, PRODUCT_TABLE, ORDER_TABLE, ORDERDETAIL_TABLE};
 

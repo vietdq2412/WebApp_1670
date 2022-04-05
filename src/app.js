@@ -49,7 +49,7 @@ app.use('/category', categoryController, express.static(path.join(__dirname, '/r
 ////////////Order
 const orderController = require('./controllers/orderController')
 const async = require('hbs/lib/async')
-const { getProductById, deleteProductById } = require('./databaseHandler')
+const { getProductById, deleteProductById, getProduct } = require('./databaseHandler')
 //tat ca dia chi chua /authen  => goi controller authen
 app.use('/order', orderController, express.static(path.join(__dirname, '/resources/public')));
 ///////////////////
@@ -76,8 +76,10 @@ app.get('/test', (req,res) => {
     res.render('test', {user:user})
 })
 
-app.get('/shop', (req,res) => {
-    res.render('shop')
+app.get('/shop',async (req,res) => {
+    const collectionName = 'Product'
+    const result = await getProduct(collectionName)
+    res.render('shop'),{products:result}
 })
 ///delete
 app.get('/delete', async(req,res)=>{
