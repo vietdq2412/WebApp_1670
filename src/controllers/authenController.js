@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const { insertObject, checkUserRole, USERTABLE } = require('../databaseHandler')
+const { insertObject, getUser, USERTABLE } = require('../databaseHandler')
 
 ///////////Login
 router.get('/login', (req, res) => {
@@ -11,16 +11,16 @@ router.post('/login', async (req, res) => {
     const username = req.body.txtName;
     const password = req.body.txtPassword;
 
-    const role = await checkUserRole(username, password);
-    if (role == -1) {
+    const user = await getUser(username, password);
+    if (user == -1) {
         res.end('login invalid!');
     } else {
-        req.session.User = "ádasd";
-        // req.session.User = {
-        //     username: username,
-        //     role: role
-        // }
-        res.redirect('/')
+        req.session.User = {
+            userId: user._id,
+            username: username,
+            role: user.role
+        }
+        res.redirect('/test')
     }
 })
 /////////
@@ -45,5 +45,4 @@ router.post('/register', (req, res) => {
 
     res.redirect('/authen/login')});
 ////////////////////
-
 module.exports = router;
