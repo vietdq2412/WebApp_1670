@@ -8,10 +8,26 @@ const router = express.Router()
 router.get('/cart', async (req, res) => {
     const orderList = await search('', ORDERDETAIL_TABLE);
     let subTotal = 0;
-    for(let i =0; i<orderList.length; i++){
+    for (let i = 0; i < orderList.length; i++) {
         subTotal += orderList[i].total;
     }
-    res.render('order/cart', { orderList: orderList, subTotal:subTotal });
+
+    let myCart = req.session["cart"]
+    var dict = {}
+    for (let i = 0; i < orderList.length; i++) {
+        let key = orderList[i].product.name;
+        let value = {
+            quantity:orderList[i].quantity,
+            total: orderList[i].total
+        }
+
+        dict[key] = value;
+    }
+    req.session["cart"] = dict
+
+    req.session["subTotal"] = subTotal;
+
+    res.render('order/cart', { orderList: orderList, subTotal: subTotal });
 })
 
 router.get('/delete', async (req, res) => {
@@ -35,10 +51,10 @@ router.get('/edit', async (req, res) => {
     }
 
     let newData = {
-         $set: { quantity: qt } 
-        };
+        $set: { quantity: qt }
+    };
 
-    await updateObject(condition,ORDERDETAIL_TABLE, newData);
+    await updateObject(condition, ORDERDETAIL_TABLE, newData);
     res.redirect('/order/cart')
 })
 
@@ -62,10 +78,20 @@ router.get('/addToCart', async (req, res) => {
 })
 
 router.get('/checkout', async (req, res) => {
-    const orderList = await search('', ORDERDETAIL_TABLE);
-    let orderDate = new Date();
-    user = req.session.id
-    res.render('order/checkout', { orderList: orderList });
+    let list = req.session.cart;
+    let orderList = [];
+    for (var key in list) {
+        const qt = list[key].quantity
+        const total = list[key].total
+        orderList.push({ 
+            name: key,
+            quantity: qt,
+            total: total
+        })
+    }
+    console.log(orderList)
+    let total = req.query.total;
+    res.render('order/checkout', { orderList: orderList, total: total });
 })
 
 router.post('/checkout', async (req, res) => {

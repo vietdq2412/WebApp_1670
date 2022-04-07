@@ -76,14 +76,9 @@
                             };
 
                             function qt_update(id, action) {
-                                alert(1)
                                 path = "/order/edit?id=" + id + "&action=" + action;
                                 window.location.href = path;
 
-                            }
-
-                            function subtotal() {
-                                alert(1)
                             }
 
                         </script>
@@ -119,9 +114,9 @@
                             <h5 class="font-weight-bold">Total</h5>
                             <h5 class="font-weight-bold">$<i id="total"></i></h5>
                         </div>
-                        <a href="order/checkout"><button class="btn btn-block btn-primary my-3 py-3"
+                        <button class="btn btn-block btn-primary my-3 py-3"
                                 onclick="checkout()">Proceed To
-                                Checkout</button></a>
+                                Checkout</button>
                     </div>
                 </div>
                 <script>
@@ -130,7 +125,7 @@
                     document.getElementById('total').innerHTML = total;
 
                     function checkout(){
-                        window.location.href = "order/checkout?total="+total;
+                        window.location.href = "/order/checkout?total="+total;
                     }
                 </script>
             </div>
