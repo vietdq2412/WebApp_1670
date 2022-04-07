@@ -1,0 +1,61 @@
+.container {
+	width: 1000px;
+	margin: 0px auto;
+}
+
+.panel {
+	display: block;
+	width: 100%;
+	border: solid #34b1eb 2px;
+	margin-bottom: 40px;
+    margin-top: 30px;
+}
+
+.panel .heading {
+	background-color: #34b1eb;
+	color: white;
+	padding: 12px;
+	font-size: 16px;
+	text-transform: uppercase;
+}
+
+.panel .body {
+	padding: 5px;
+}
+
+.form-control {
+	width: 100%;
+}
+
+.panel .body label, .panel .body input, .panel .body select {
+	width: 100%;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	font-size: 15px;
+	padding: 5px;
+}
+
+.btn-success {
+	font-size: 16px;
+	background-color: green;
+	color: white;
+	border: none;
+	padding: 10px;
+}
+
+.btn-reset {
+	font-size: 16px;
+	background-color: red;
+	color: white;
+	border: none;
+	padding: 10px;
+}
+
+.table {
+	width: 100%;
+}
+
+.table th, .table td {
+	border: solid grey 1px;
+	padding: 6px;
+}

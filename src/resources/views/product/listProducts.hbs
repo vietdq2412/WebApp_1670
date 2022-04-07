@@ -1,4 +1,4 @@
-<h1>List Category</h1>
+<h1>List Products</h1>
 
 <table class="table table-striped">
     <thead>
@@ -8,6 +8,10 @@
             <th>Image</th>
             <th>Category</th>
             <th>Delete</th>
+            <th>Edit</th>
+            <th>Detail</th>
+
+
         </tr>
     </thead>
     <tbody>
@@ -16,9 +20,11 @@
             <td>{{name}}</td>
             <td>{{price}}</td>
             <td><img src="{{image}}" alt="" width="100" height="100"></td>
-            <td>{{category}}</td>
+            <td>{{category.name}}</td>
 
             <td><a href="/delete?id={{_id}}" onclick="return confirm('Are you sure?')">Delete</a></td>
+            <td><a href="product/edit?id={{_id}}">Edit</a></td>
+            <td><a href="product/detail?id={{_id}}">Detail</a></td>
         </tr>
         {{/each}}
     </tbody>

@@ -13,15 +13,21 @@
         </div>
         <div class="col-lg-6 text-center text-lg-right">
             <div class="d-inline-flex align-items-center">
-                <a class="text-dark px-2" href="authen/login">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+           
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                         class="bi bi-person-circle" viewBox="0 0 16 16">
                         <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
                         <path fill-rule="evenodd"
                             d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
                     </svg>
-                    Login
-                </a>
+                    <a class="text-dark" onclick="loginForm()">Login</a>
+                    <script>
+                        function loginForm(){
+                            window.location.href = '/authen/login'
+                        }
+
+                    </script>
+        
                 {{!-- <a class="text-dark px-2" href="">
                     <i class="fab fa-twitter"></i>
                 </a>
@@ -61,7 +67,7 @@
                 <i class="fas fa-heart text-primary"></i>
                 <span class="badge">0</span>
             </a> --}}
-            <a href="/cart" class="btn border">
+            <a href="order/cart" class="btn border">
                 <i class="fas fa-shopping-cart text-primary"></i>
                 <span class="badge" style="color: chocolate;">1</span>
             </a>

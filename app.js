@@ -46,27 +46,61 @@ const categoryController = require('./controllers/categoryController')
 app.use('/category', categoryController, express.static(path.join(__dirname, '/resources/public')));
 ///////////////////
 
+////////////Order
+const orderController = require('./controllers/orderController')
+const async = require('hbs/lib/async')
+const { getProductById, deleteProductById, getProduct } = require('./databaseHandler')
+//tat ca dia chi chua /authen  => goi controller authen
+app.use('/order', orderController, express.static(path.join(__dirname, '/resources/public')));
+///////////////////
+
 
 app.get('/', (req,res) => {
     res.render('index')
 })
 
-app.get('/shop', (req,res) => {
-    res.render('shop')
+app.get('/test', (req,res) => {
+    let id = req.session.userId;
+    let name = req.session.username;
+    let role = req.session.role
+
+    console.log(id)
+    console.log(name)
+    console.log(role)
+
+    let user = {
+        id : id,
+        username: name,
+        role: role
+    }
+    res.render('test', {user:user})
 })
 
-app.get('/detail', (req,res) => {
-    res.render('detail')
+app.get('/shop',async (req,res) => {
+    const collectionName = 'Product'
+    const result = await getProduct(collectionName)
+    res.render('shop'),{products:result}
+})
+///delete
+app.get('/delete', async(req,res)=>{
+    const id = req.query.id
+    const collectionName ='Product'
+    await deleteProductById(collectionName,id)
+    res.redirect('product')
 })
 
-app.get('/cart', (req,res) => {
-    res.render('cart')
+app.get('/product/edit',async(req,res)=>{
+    const id = req.query.id
+    const collectionName = 'Product'
+    const document = await getProductById(collectionName,id)
+    console.log(document)
+    res.render('edit',{product:document})
+
 })
 
 app.get('/checkout', (req,res) => {
     res.render('checkout')
 })
-
 
 
 

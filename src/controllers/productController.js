@@ -1,7 +1,8 @@
 const express = require('express');
+const req = require('express/lib/request');
 const async = require('hbs/lib/async');
 const router = express.Router()
-const { insertObject, checkUserRole, search, PRODUCT_TABLE, CATEGORY_TABLE } = require('../databaseHandler')
+const { insertObject, checkUserRole, search, PRODUCT_TABLE, CATEGORY_TABLE, searchOne } = require('../databaseHandler')
 
 router.get('/', async (req, res) => {
     // if (req.session.username) {
@@ -18,27 +19,55 @@ router.get('/', async (req, res) => {
     console.log(products);
     res.render('product/listProducts', { products: products})
 })
-
+///show products
+router.get('/',async(req,res)=>{
+    const product = await search('',PRODUCT_TABLE);
+    console.log(product);
+    res.render('/shop',{product: product})
+})
+///add product
 router.get('/add', async (req, res) => {
     const categories = await search('', CATEGORY_TABLE);
     res.render('product/addProductForm', {categories:categories})
 })
 
-router.post('/add', (req, res) => {
+router.post('/add', async (req, res) => {
     const name = req.body.txtName;
+    const categoryId = req.body.txtCategory;
     const price = req.body.txtPrice;
     const image = req.body.txtImage;
-    const category = req.body.txtCategory;
 
+    var ObjectID = require('mongodb').ObjectID;
+    const condition = { "_id": ObjectID(categoryId) };
 
+    const category = await searchOne(condition, CATEGORY_TABLE);
     objectToInsert = {
         name: name,
+        category:category,
         price: price,
         image:image,
-        category:category
     }
-    insertObject(PRODUCT_TABLE, objectToInsert);
+    await insertObject(PRODUCT_TABLE, objectToInsert);
     res.redirect('/product')
 })
+///edit 
+router.get('/edit', async (req, res) => {
+    const categories = await search('', CATEGORY_TABLE);
+    res.render('product/editProductForm', {categories:categories})
+})
+
+///detail
+router.get('/detail', async (req, res) => {
+    const id = req.query.id;
+    var ObjectID = require('mongodb').ObjectID;
+    const condition = { "_id": ObjectID(id) };
+    console.log(id)
+    const product = await searchOne(condition, PRODUCT_TABLE);
+    res.render('product/detail', {product:product})
+})
+
+
+/////order
+
 
 module.exports = router;
