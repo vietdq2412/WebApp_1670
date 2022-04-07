@@ -166,13 +166,11 @@
                     </div>
 
                     {{!-- dung vong for ở đây --}}
-                    
+                {{#each products}}
                     <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
                         <div class="card product-item border-0 mb-4">
                             <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                {{#each product}}
                                 <img class="img-fluid w-100" src="{{image}}" alt="">
-                                {{/each}}
                             </div>
                             <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                                 <h6 class="text-truncate mb-3">{{name}}</h6>
@@ -186,7 +184,7 @@
                             </div>
                         </div>
                     </div>
-
+                {{/each}}
                     <div class="col-12 pb-1">
                         <nav aria-label="Page navigation">
                           <ul class="pagination justify-content-center mb-3">

@@ -76,11 +76,6 @@ app.get('/test', (req,res) => {
     res.render('test', {user:user})
 })
 
-app.get('/shop',async (req,res) => {
-    const collectionName = 'Product'
-    const result = await getProduct(collectionName)
-    res.render('shop'),{products:result}
-})
 ///delete
 app.get('/delete', async(req,res)=>{
     const id = req.query.id

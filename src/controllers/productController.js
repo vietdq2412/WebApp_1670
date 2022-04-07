@@ -20,10 +20,11 @@ router.get('/', async (req, res) => {
     res.render('product/listProducts', { products: products})
 })
 ///show products
-router.get('/',async(req,res)=>{
-    const product = await search('',PRODUCT_TABLE);
-    console.log(product);
-    res.render('/shop',{product: product})
+router.get('/shop',async(req,res)=>{
+    console.log(1)
+    const products = await search('',PRODUCT_TABLE);
+    console.log(products);
+    res.render('shop',{products: products})
 })
 ///add product
 router.get('/add', async (req, res) => {
