@@ -1,4 +1,5 @@
 const express = require('express')
+const async = require('hbs/lib/async')
 const router = express.Router()
 const { insertObject, getUser, USERTABLE } = require('../databaseHandler')
 
@@ -30,7 +31,7 @@ router.get('/register', (req, res) => {
     res.render('register')
 })
 
-router.post('/register', (req, res) => {
+router.post('/register', async (req, res) => {
     const name = req.body.txtName;
     const password = req.body.txtPassword;
     const role = req.body.role;
@@ -41,7 +42,7 @@ router.post('/register', (req, res) => {
         role: role
     }
 
-    insertObject(USERTABLE, objectToInsert);
+    await insertObject(USERTABLE, objectToInsert);
 
     res.redirect('/authen/login')});
 ////////////////////

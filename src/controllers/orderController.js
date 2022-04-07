@@ -7,7 +7,11 @@ const router = express.Router()
 
 router.get('/cart', async (req, res) => {
     const orderList = await search('', ORDERDETAIL_TABLE);
-    res.render('order/cart', { orderList: orderList });
+    let subTotal = 0;
+    for(let i =0; i<orderList.length; i++){
+        subTotal += orderList[i].total;
+    }
+    res.render('order/cart', { orderList: orderList, subTotal:subTotal });
 })
 
 router.get('/delete', async (req, res) => {
@@ -46,9 +50,11 @@ router.get('/addToCart', async (req, res) => {
     const condition = { "_id": ObjectID(id) };
     let product = await searchOne(condition, PRODUCT_TABLE);
 
+    let total = product.price * quantity;
     let object = {
         product: product,
         quantity: quantity,
+        total: total
     }
 
     await insertObject(ORDERDETAIL_TABLE, object);
@@ -57,6 +63,14 @@ router.get('/addToCart', async (req, res) => {
 
 router.get('/checkout', async (req, res) => {
     const orderList = await search('', ORDERDETAIL_TABLE);
+    let orderDate = new Date();
+    user = req.session.id
+    res.render('order/checkout', { orderList: orderList });
+})
+
+router.post('/checkout', async (req, res) => {
+    const orderList = await search('', ORDERDETAIL_TABLE);
+    let orderDate = new Date();
     user = req.session.id
     res.render('order/checkout', { orderList: orderList });
 })

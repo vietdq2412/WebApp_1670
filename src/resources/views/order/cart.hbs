@@ -32,7 +32,7 @@
                     </thead>
                     <tbody class="align-middle">
                         {{#each orderList }}
-                        <tr>
+                        <tr onload="subtotal()">
                             <td><img src="{{product.image}}" alt="" style="width: 50px;"></td>
                             <td class="align-middle">{{product.name}}</td>
                             <td class="align-middle">${{product.price}}</td>
@@ -54,7 +54,7 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="align-middle" id="{{_id}}" onclick="multi('{{_id}}',{{product.price}})">$</td>
+                            <td class="align-middle" id="totalItem{{_id}}">${{total}}</td>
                             <td class="align-middle"><button onclick="redirectW_id('{{_id}}')"
                                     class="btn btn-sm btn-primary"><i class="fa fa-times"></i></button></td>
                         </tr>
@@ -62,10 +62,9 @@
 
                         {{/each}}
                         <script>
-                            function multi(id, a) {
-                                alert(1)
+                            function multi(qtid, a) {
                                 console.log(id)
-                                let b = document.getElementById('qt' + id).value;
+                                let b = document.getElementById('qt' + qtid).value;
                                 document.getElementById(id).innerHTML = a * b
                             };
 
@@ -83,6 +82,9 @@
 
                             }
 
+                            function subtotal() {
+                                alert(1)
+                            }
 
                         </script>
                     </tbody>
@@ -101,35 +103,36 @@
                     <div class="card-header bg-secondary border-0">
                         <h4 class="font-weight-semi-bold m-0">Cart Summary</h4>
                     </div>
-                    {{#each orderList }}
-                        
-                    {{/each}}
-                    <script>
-                        let subtotal = 0;
-                        subtotal({{orderlist}})
-                        function subtotal() {
 
-                        }
-                    </script>
-                    <div class="card-body">
+                    <div class="card-body" id="checkout">
                         <div class="d-flex justify-content-between mb-3 pt-1">
                             <h6 class="font-weight-medium">Subtotal</h6>
-                            <h6 class="font-weight-medium">$150</h6>
+                            <h6 class="font-weight-medium">$ <i id="subtotal">{{subTotal}}</i> </h6>
                         </div>
                         <div class="d-flex justify-content-between">
                             <h6 class="font-weight-medium">Shipping</h6>
-                            <h6 class="font-weight-medium">$10</h6>
+                            <h6 class="font-weight-medium">$ <i id="ship_fee">10</i></h6>
                         </div>
                     </div>
                     <div class="card-footer border-secondary bg-transparent">
                         <div class="d-flex justify-content-between mt-2">
                             <h5 class="font-weight-bold">Total</h5>
-                            <h5 class="font-weight-bold">$160</h5>
+                            <h5 class="font-weight-bold">$<i id="total"></i></h5>
                         </div>
-                        <a href="order/checkout"><button class="btn btn-block btn-primary my-3 py-3">Proceed To
+                        <a href="order/checkout"><button class="btn btn-block btn-primary my-3 py-3"
+                                onclick="checkout()">Proceed To
                                 Checkout</button></a>
                     </div>
                 </div>
+                <script>
+                    let subtt = document.getElementById('subtotal').textContent;
+                    let total = parseInt(subtt) + 10;
+                    document.getElementById('total').innerHTML = total;
+
+                    function checkout(){
+                        window.location.href = "order/checkout?total="+total;
+                    }
+                </script>
             </div>
         </div>
     </div>
