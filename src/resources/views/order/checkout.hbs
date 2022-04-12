@@ -15,6 +15,7 @@
 
 
     <!-- Checkout Start -->
+    <form action="/order/checkout" method="post">
     <div class="container-fluid pt-5">
         <div class="row px-xl-5">
             <div class="col-lg-8">
@@ -37,19 +38,6 @@
                             <label>Address Line</label>
                             <input name="address" class="form-control" type="text" placeholder="123 Street">
                         </div>
-                        {{!-- <div class="col-md-12 form-group">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="newaccount">
-                                <label class="custom-control-label" for="newaccount">Create an account</label>
-                            </div>
-                        </div>
-                        <div class="col-md-12 form-group">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="shipto">
-                                <label class="custom-control-label" for="shipto" data-toggle="collapse"
-                                    data-target="#shipping-address">Ship to different address</label>
-                            </div>
-                        </div> --}}
                     </div>
                 </div>
                 <div class="collapse mb-4" id="shipping-address">
@@ -127,12 +115,14 @@
                         </div>
                     </div> --}}
                     <div class="card-footer border-secondary bg-transparent">
-                        <button class="btn btn-lg btn-block btn-primary font-weight-bold my-3 py-3">Place Order</button>
+                            <button class="btn btn-lg btn-block btn-primary font-weight-bold my-3 py-3">Place
+                                Order</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    </form>
     <!-- Checkout End -->
 
     <!-- Back to Top -->
