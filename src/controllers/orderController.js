@@ -12,20 +12,24 @@ router.get('/cart', async (req, res) => {
         subTotal += orderList[i].total;
     }
 
-    let myCart = req.session["cart"]
-    var dict = {}
-    for (let i = 0; i < orderList.length; i++) {
-        let key = orderList[i].product.name;
-        let value = {
-            quantity: orderList[i].quantity,
-            total: orderList[i].total
+    let cartSession = req.session.cart;
+
+    if (!cartSession) {
+        var dict = {}
+        for (let i = 0; i < orderList.length; i++) {
+            let key = orderList[i].product.name;
+            let value = {
+                quantity: orderList[i].quantity,
+                total: orderList[i].total
+            }
+            dict[key] = value;
         }
+        req.session["cart"] = dict;
+        console.log("cartSes", req.session.cart)
 
-        dict[key] = value;
+    } else {
+        req.session["cart"] = cartSession;
     }
-    req.session["cart"] = dict
-
-    req.session["subTotal"] = subTotal;
 
     res.render('order/cart', { orderList: orderList, subTotal: subTotal });
 })
@@ -50,8 +54,9 @@ router.get('/edit', async (req, res) => {
         qt = parseInt(item.quantity) - 1;
     }
 
+    let total = qt * parseInt(item.product.price)
     let newData = {
-        $set: { quantity: qt }
+        $set: { quantity: qt, total: total }
     };
 
     await updateObject(condition, ORDERDETAIL_TABLE, newData);
@@ -66,17 +71,20 @@ router.get('/addToCart', async (req, res) => {
     const condition = { "_id": ObjectID(id) };
     let product = await searchOne(condition, PRODUCT_TABLE);
 
-    const itemCondition = {"product": Object(product) };
+    const itemCondition = { "product": Object(product) };
     let item = await searchOne(itemCondition, ORDERDETAIL_TABLE);
+
+    let qt;
+    let total = parseInt(product.price) * parseInt(inputQuantity);
     if (item != null) {
-        let qt = parseInt(item.quantity)  + parseInt(inputQuantity);
+        qt = parseInt(item.quantity) + parseInt(inputQuantity);
+        total = product.price * qt;
         let editData = {
-            $set: { quantity: qt }
+            $set: { quantity: qt, total: total }
         };
         await updateObject({ "_id": ObjectID(item._id) }, ORDERDETAIL_TABLE, editData);
         res.redirect('/order/cart')
     } else {
-        let total = product.price * inputQuantity;
         let object = {
             product: product,
             quantity: inputQuantity,
@@ -89,7 +97,8 @@ router.get('/addToCart', async (req, res) => {
 })
 
 router.get('/checkout', async (req, res) => {
-    let list = req.session.cart;
+    let list = req.session['cart'];
+    console.log(list)
     let orderList = [];
     for (var key in list) {
         const qt = list[key].quantity
@@ -100,6 +109,7 @@ router.get('/checkout', async (req, res) => {
             total: total
         })
     }
+
     console.log(orderList)
     let total = req.query.total;
     res.render('order/checkout', { orderList: orderList, total: total });
