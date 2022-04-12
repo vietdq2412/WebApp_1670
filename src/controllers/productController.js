@@ -37,6 +37,8 @@ router.post('/add', async (req, res) => {
     const categoryId = req.body.txtCategory;
     const price = req.body.txtPrice;
     const image = req.body.txtImage;
+    const qt = req.body.txtQuantity;
+
 
     var ObjectID = require('mongodb').ObjectID;
     const condition = { "_id": ObjectID(categoryId) };
@@ -46,6 +48,7 @@ router.post('/add', async (req, res) => {
         name: name,
         category:category,
         price: price,
+        quantity: qt,
         image:image,
     }
     await insertObject(PRODUCT_TABLE, objectToInsert);

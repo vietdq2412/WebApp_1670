@@ -8,13 +8,13 @@ router.get('/add', (req, res) => {
     res.render('category/addCategoryForm')
 })
 
-router.post('/add', (req, res) => {
+router.post('/add', async (req, res) => {
     const name = req.body.txtName;
 
     objectToInsert = {
         name: name
     }
-    insertObject(CATEGORY_TABLE, objectToInsert);
+    await insertObject(CATEGORY_TABLE, objectToInsert);
     res.redirect('/category')
 })
 

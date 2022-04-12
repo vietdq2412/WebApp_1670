@@ -17,7 +17,7 @@ router.get('/cart', async (req, res) => {
     for (let i = 0; i < orderList.length; i++) {
         let key = orderList[i].product.name;
         let value = {
-            quantity:orderList[i].quantity,
+            quantity: orderList[i].quantity,
             total: orderList[i].total
         }
 
@@ -60,21 +60,32 @@ router.get('/edit', async (req, res) => {
 
 router.get('/addToCart', async (req, res) => {
     const id = req.query.id;
-    let quantity = req.query.qt;
+    let inputQuantity = req.query.qt;
 
     let ObjectID = require('mongodb').ObjectID;
     const condition = { "_id": ObjectID(id) };
     let product = await searchOne(condition, PRODUCT_TABLE);
 
-    let total = product.price * quantity;
-    let object = {
-        product: product,
-        quantity: quantity,
-        total: total
-    }
+    const itemCondition = {"product": Object(product) };
+    let item = await searchOne(itemCondition, ORDERDETAIL_TABLE);
+    if (item != null) {
+        let qt = parseInt(item.quantity)  + parseInt(inputQuantity);
+        let editData = {
+            $set: { quantity: qt }
+        };
+        await updateObject({ "_id": ObjectID(item._id) }, ORDERDETAIL_TABLE, editData);
+        res.redirect('/order/cart')
+    } else {
+        let total = product.price * inputQuantity;
+        let object = {
+            product: product,
+            quantity: inputQuantity,
+            total: total
+        }
 
-    await insertObject(ORDERDETAIL_TABLE, object);
-    res.redirect('/order/cart')
+        await insertObject(ORDERDETAIL_TABLE, object);
+        res.redirect('/order/cart')
+    }
 })
 
 router.get('/checkout', async (req, res) => {
@@ -83,7 +94,7 @@ router.get('/checkout', async (req, res) => {
     for (var key in list) {
         const qt = list[key].quantity
         const total = list[key].total
-        orderList.push({ 
+        orderList.push({
             name: key,
             quantity: qt,
             total: total
