@@ -6,6 +6,8 @@ const {ObjectID} = require("mongodb");
 const router = express.Router()
 
 router.get('/cart', async (req, res) => {
+    const curUser = req.session.User;
+
     const orderDetailList = await search('', ORDERDETAIL_TABLE);
     let subTotal = 0;
     for (let i = 0; i < orderDetailList.length; i++) {
@@ -65,10 +67,21 @@ router.get('/edit', async (req, res) => {
 })
 
 router.get('/addToCart', async (req, res) => {
+    const ObjectID = require('mongodb').ObjectID;
+
+    const curUser = req.session.User;
+    if (!curUser){
+        let messageerror = 'add to cart, not login!';
+        console.log('add to cart, not login!');
+        res.render('test', {message:messageerror})
+        return;
+    }
+    console.log('add to cart: user:', curUser)
+    const userId = ObjectID(curUser.id);
+
     const id = req.query.id;
     let inputQuantity = req.query.qt;
 
-    let ObjectID = require('mongodb').ObjectID;
     const condition = { "_id": ObjectID(id) };
     let product = await searchOne(condition, PRODUCT_TABLE);
     let productId = product._id;
@@ -88,6 +101,7 @@ router.get('/addToCart', async (req, res) => {
         res.redirect('/orderDetail/cart')
     } else {
         let object = {
+            userId: userId,
             productId: productId,
             product: product,
             quantity: inputQuantity,
@@ -99,6 +113,9 @@ router.get('/addToCart', async (req, res) => {
     }
 })
 
-
+router.get('/remove', async (req, res) => {
+    await remove(ORDERDETAIL_TABLE);
+    res.redirect("/orderDetail/cart")
+})
 
 module.exports = router;
