@@ -54,7 +54,6 @@ app.use('/orderDetail', orderDetailController, express.static(path.join(__dirnam
 
 ////////////Order
 const orderController = require('./controllers/orderController')
-//tat ca dia chi chua /order  => goi controller orderController
 app.use('/order', orderController, express.static(path.join(__dirname, '/resources/public')));
 ///////////////////
 
@@ -97,9 +96,12 @@ app.get('/product/edit',async(req,res)=>{
 
 })
 
+app.get('/checkout', (req,res) => {
+    res.render('checkout')
+})
 
 
 
 const PORT = process.env.PORT || 5000
 app.listen(PORT)
-console.log('Server is running at ' + PORT)
+// console.log('Server is running at ' + PORT)
