@@ -91,7 +91,10 @@ app.get('/product/edit',async(req,res)=>{
     console.log(document)
     res.render('edit',{product:document})
 
+})
 
+app.get('/checkout', (req,res) => {
+    res.render('checkout')
 })
 
 
