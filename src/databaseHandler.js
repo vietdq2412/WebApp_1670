@@ -91,6 +91,19 @@ async function checkUserRole(username, password){
     }
 }
 
+function getCurrentUserSession(req,res){
+    const curUser = req.session.User;
+    if (!curUser){
+        let messageerror = 'add to cart, not login!';
+        console.log('add to cart, not login!');
+        res.render('test', {message:messageerror});
+        return;
+    }else {
+        console.log('logged in!')
+        return curUser;
+    }
+}
+
 const USERTABLE = 'Users';
 const CATEGORY_TABLE = 'Category';
 const PRODUCT_TABLE = 'Product';
@@ -100,5 +113,5 @@ const ORDERDETAIL_TABLE = 'OrderDetail';
 
 
 module.exports = {insertObject, checkUserRole, getUser, search , getProduct , deleteProductById, deleteObjectById, updateObject,
-     getProductById, searchOne, remove, USERTABLE, CATEGORY_TABLE, PRODUCT_TABLE, ORDER_TABLE, ORDERDETAIL_TABLE};
+     getProductById,getCurrentUserSession , searchOne, remove, USERTABLE, CATEGORY_TABLE, PRODUCT_TABLE, ORDER_TABLE, ORDERDETAIL_TABLE};
 

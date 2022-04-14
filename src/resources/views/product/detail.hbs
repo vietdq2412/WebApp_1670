@@ -74,7 +74,7 @@
                     <script>
                         function order(id) {
                             let qt = document.getElementById('quantity').value;
-                            window.location.href = "/order/addToCart?id=" + id + "&qt=" + qt;
+                            window.location.href = "/orderDetail/addToCart?id=" + id + "&qt=" + qt;
                         }
                     </script>
                     <button onclick="order('{{product._id}}')" class="btn btn-primary px-3"><i class="fa fa-shopping-cart mr-1"></i> Add To Cart</button>

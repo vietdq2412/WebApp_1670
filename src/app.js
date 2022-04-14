@@ -36,19 +36,24 @@ app.use('/authen', authenController, express.static(path.join(__dirname, '/resou
 
 ////////////Product
 const productController = require('./controllers/productController')
-//tat ca dia chi chua /authen  => goi controller authen
+//tat ca dia chi chua /product  => goi controller productController
 app.use('/product', productController, express.static(path.join(__dirname, '/resources/public')));
 ///////////////////
 
 ////////////Category
 const categoryController = require('./controllers/categoryController')
-//tat ca dia chi chua /authen  => goi controller authen
+//tat ca dia chi chua /category  => goi controller categoryController
 app.use('/category', categoryController, express.static(path.join(__dirname, '/resources/public')));
+///////////////////
+
+////////////OrderDetail
+const orderDetailController = require('./controllers/orderDetailController')
+//tat ca dia chi chua /ỏrderDetail  => goi controller orderDetailController
+app.use('/orderDetail', orderDetailController, express.static(path.join(__dirname, '/resources/public')));
 ///////////////////
 
 ////////////Order
 const orderController = require('./controllers/orderController')
-//tat ca dia chi chua /authen  => goi controller authen
 app.use('/order', orderController, express.static(path.join(__dirname, '/resources/public')));
 ///////////////////
 
@@ -58,9 +63,12 @@ app.get('/', (req,res) => {
 })
 
 app.get('/test', (req,res) => {
-    let id = req.session.userId;
-    let name = req.session.username;
-    let role = req.session.role
+    const appUser = req.session.User;
+
+    let id = appUser.userId;
+    let name = appUser.username;
+    let role = appUser.role
+
 
     console.log(id)
     console.log(name)
@@ -71,6 +79,7 @@ app.get('/test', (req,res) => {
         username: name,
         role: role
     }
+    console.log("test user ", user)
     res.render('test', {user:user})
 })
 
@@ -91,9 +100,12 @@ app.get('/test', (req,res) => {
 
 // })
 
+app.get('/checkout', (req,res) => {
+    res.render('checkout')
+})
 
 
 
 const PORT = process.env.PORT || 5000
 app.listen(PORT)
-console.log('Server is running at ' + PORT)
+// console.log('Server is running at ' + PORT)
