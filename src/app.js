@@ -20,7 +20,7 @@ app.use(express.urlencoded({
 }))
 
 
-app.use(session({ secret: 'nhom 1 0902', cookie: { maxAge: 60000 }, saveUninitialized:false, resave: false}))
+app.use(session({ secret: 'nhom 1 0902', cookie: { maxAge: 60*60*24*1000 }, saveUninitialized:false, resave: false}))
 
 ////////////admin
 const adminController = require('./controllers/adminController')
@@ -69,26 +69,12 @@ app.get('/test', (req,res) => {
     let name = appUser.username;
     let role = appUser.role
 
-
-    console.log(id)
-    console.log(name)
-    console.log(role)
-
     let user = {
         id : id,
         username: name,
         role: role
     }
-    console.log("test user ", user)
     res.render('test', {user:user})
-})
-
-///delete
-app.get('/delete', async(req,res)=>{
-    const id = req.query.id
-    const collectionName ='Product'
-    await deleteProductById(collectionName,id)
-    res.redirect('product')
 })
 
 app.get('/product/edit',async(req,res)=>{

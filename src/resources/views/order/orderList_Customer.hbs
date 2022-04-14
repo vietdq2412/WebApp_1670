@@ -5,8 +5,9 @@
         <tr>
             <th>Name</th>
             <th>Phone</th>
-            <th>Item</th>
-
+            <th>Status</th>
+            <th>Delivery Address</th>
+            <th>Order date</th>
             <th>Detail</th>
 
 
@@ -18,9 +19,20 @@
             <td>{{name}}</td>
             <td>{{phone}}</td>
             <td>{{status}}</td>
+            <td>{{address}}</td>
+            <td onload="formatDate(this)">{{date}}</td>
 
             <td><a href="order/detail?id={{_id}}">Detail</a></td>
         </tr>
         {{/each}}
     </tbody>
 </table>
+<script>
+    function formatDate(){
+        alert(1)
+        let date = this.value;
+        date = new Date(date);
+
+        console.log(date);
+    }
+</script>

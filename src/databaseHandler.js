@@ -56,6 +56,14 @@ async function deleteObjectById(collectionName,id){
     console.log("deleted id: ", id)
 }
 
+
+///////delete many
+async function deleteManyObjects(collectionName,condition){
+    let client = await MongoClient.connect(URL)
+    let dbo = client.db(DATABASE_NAME)
+    await dbo.collection(collectionName).deleteMany(condition);
+}
+
 async function updateObject(condition, collectionName, item){
     let client = await MongoClient.connect(URL)
     let dbo = client.db(DATABASE_NAME)
@@ -100,6 +108,7 @@ function getCurrentUserSession(req,res){
         return;
     }else {
         console.log('logged in!')
+        req.session.User = curUser;
         return curUser;
     }
 }
@@ -113,5 +122,5 @@ const ORDERDETAIL_TABLE = 'OrderDetail';
 
 
 module.exports = {insertObject, checkUserRole, getUser, search , getProduct , deleteProductById, deleteObjectById, updateObject,
-     getProductById,getCurrentUserSession , searchOne, remove, USERTABLE, CATEGORY_TABLE, PRODUCT_TABLE, ORDER_TABLE, ORDERDETAIL_TABLE};
+     getProductById ,deleteManyObjects ,getCurrentUserSession , searchOne, remove, USERTABLE, CATEGORY_TABLE, PRODUCT_TABLE, ORDER_TABLE, ORDERDETAIL_TABLE};
 

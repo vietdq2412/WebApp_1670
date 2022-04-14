@@ -67,7 +67,6 @@ router.get('/edit', async (req, res) => {
 
 router.get('/addToCart', async (req, res) => {
     const ObjectID = require('mongodb').ObjectID;
-
     const curUser = getCurrentUserSession(req,res);
 
     console.log('add to cart: user:', curUser)

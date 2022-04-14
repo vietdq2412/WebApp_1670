@@ -1,6 +1,7 @@
 const express = require('express');
 const { insertObject, checkUserRole, search, searchOne, deleteObjectById, updateObject, remove, getCurrentUserSession,
-    ORDER_TABLE, ORDERDETAIL_TABLE, PRODUCT_TABLE } = require('../databaseHandler')
+    deleteManyObjects ,ORDER_TABLE, ORDERDETAIL_TABLE, PRODUCT_TABLE } = require('../databaseHandler')
+const {ObjectID} = require("mongodb");
 
 const router = express.Router()
 
@@ -64,6 +65,8 @@ router.post('/checkout', async (req, res) => {
         await updateObject(condition, PRODUCT_TABLE, updateData);
     }
 
+    let condition = { "userId": curUser.userId };
+    await deleteManyObjects(ORDERDETAIL_TABLE,condition);
     await insertObject(ORDER_TABLE, objectToInsert);
     res.redirect('/order/orderList');
 })
