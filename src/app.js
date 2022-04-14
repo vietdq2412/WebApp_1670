@@ -77,21 +77,6 @@ app.get('/test', (req,res) => {
     res.render('test', {user:user})
 })
 
-app.get('/product/edit',async(req,res)=>{
-    const id = req.query.id
-    const collectionName = 'Product'
-    const document = await getProductById(collectionName,id)
-    console.log(document)
-    res.render('edit',{product:document})
-
-})
-
-app.get('/checkout', (req,res) => {
-    res.render('checkout')
-})
-
-
-
 const PORT = process.env.PORT || 5000
 app.listen(PORT)
 // console.log('Server is running at ' + PORT)
