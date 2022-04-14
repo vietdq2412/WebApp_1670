@@ -56,8 +56,15 @@ router.post('/add', async (req, res) => {
 })
 ///edit 
 router.get('/edit', async (req, res) => {
+    const id = req.query.id
+    var ObjectID = require('mongodb').ObjectID;
+    const condition = {"_id":ObjectID(id)};
+    console.log(id)
+    const product = await searchOne(condition, PRODUCT_TABLE);
+
     const categories = await search('', CATEGORY_TABLE);
-    res.render('product/editProductForm', {categories:categories})
+    console.log('cat',product.category.name)
+    res.render('product/editProductForm', {product:product, categories})
 })
 
 ///detail
