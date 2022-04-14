@@ -36,19 +36,25 @@ app.use('/authen', authenController, express.static(path.join(__dirname, '/resou
 
 ////////////Product
 const productController = require('./controllers/productController')
-//tat ca dia chi chua /authen  => goi controller authen
+//tat ca dia chi chua /product  => goi controller productController
 app.use('/product', productController, express.static(path.join(__dirname, '/resources/public')));
 ///////////////////
 
 ////////////Category
 const categoryController = require('./controllers/categoryController')
-//tat ca dia chi chua /authen  => goi controller authen
+//tat ca dia chi chua /category  => goi controller categoryController
 app.use('/category', categoryController, express.static(path.join(__dirname, '/resources/public')));
+///////////////////
+
+////////////OrderDetail
+const orderDetailController = require('./controllers/orderDetailController')
+//tat ca dia chi chua /ỏrderDetail  => goi controller orderDetailController
+app.use('/orderDetail', orderDetailController, express.static(path.join(__dirname, '/resources/public')));
 ///////////////////
 
 ////////////Order
 const orderController = require('./controllers/orderController')
-//tat ca dia chi chua /authen  => goi controller authen
+//tat ca dia chi chua /order  => goi controller orderController
 app.use('/order', orderController, express.static(path.join(__dirname, '/resources/public')));
 ///////////////////
 

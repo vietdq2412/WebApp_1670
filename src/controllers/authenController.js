@@ -1,5 +1,5 @@
 const express = require('express')
-const async = require('hbs/lib/async')
+
 const router = express.Router()
 const { insertObject, getUser, USERTABLE } = require('../databaseHandler')
 

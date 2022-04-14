@@ -71,12 +71,12 @@
                             function redirectW_id(id) {
                                 let confirm = window.confirm("Are you sure?");
                                 if (confirm) {
-                                    window.location.href = "/order/delete?id=" + id;
+                                    window.location.href = "/orderDetail/delete?id=" + id;
                                 }
                             };
 
                             function qt_update(id, action) {
-                                path = "/order/edit?id=" + id + "&action=" + action;
+                                path = "/orderDetail/edit?id=" + id + "&action=" + action;
                                 window.location.href = path;
 
                             }
