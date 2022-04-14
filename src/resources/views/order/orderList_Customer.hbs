@@ -7,9 +7,6 @@
             <th>Phone</th>
             <th>Item</th>
 
-
-            <th>Delete</th>
-            <th>Edit</th>
             <th>Detail</th>
 
 
@@ -20,11 +17,9 @@
         <tr>
             <td>{{name}}</td>
             <td>{{phone}}</td>
-            <td>ssff</td>
+            <td>{{status}}</td>
 
-            <td><a href="/delete?id={{_id}}" onclick="return confirm('Are you sure?')">Delete</a></td>
-            <td><a href="product/edit?id={{_id}}">Edit</a></td>
-            <td><a href="product/detail?id={{_id}}">Detail</a></td>
+            <td><a href="order/detail?id={{_id}}">Detail</a></td>
         </tr>
         {{/each}}
     </tbody>

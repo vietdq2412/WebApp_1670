@@ -1,24 +1,27 @@
 const express = require('express');
-const { insertObject, checkUserRole, search, searchOne, deleteObjectById, updateObject, remove,
-    ORDER_TABLE, ORDERDETAIL_TABLE, PRODUCT_TABLE } = require('../databaseHandler')
+const { insertObject, checkUserRole, search, searchOne, deleteObjectById, updateObject, remove, getCurrentUserSession,
+    ORDER_TABLE, ORDERDETAIL_TABLE, PRODUCT_TABLE} = require('../databaseHandler')
 const {ObjectID} = require("mongodb");
 
 const router = express.Router()
 
 router.get('/cart', async (req, res) => {
-    const curUser = req.session.User;
+    const curUser = getCurrentUserSession(req,res);
+    if (!curUser){
+        res.render('test', {message: 'please login first!'});
+        return;
+    }
 
-    const orderDetailList = await search('', ORDERDETAIL_TABLE);
+    let ObjectID = require('mongodb').ObjectID;
+    const condition = { "userId": curUser.userId };
+    const orderDetailList = await search(condition, ORDERDETAIL_TABLE);
     let subTotal = 0;
     for (let i = 0; i < orderDetailList.length; i++) {
         subTotal += orderDetailList[i].total;
     }
 
-    let cartSession = req.session.cart;
-
-    if (!cartSession) {
-        var dict = {}
-        for (let i = 0; i < orderDetailList.length; i++) {
+    let dict = {}
+    for (let i = 0; i < orderDetailList.length; i++) {
             let key = orderDetailList[i].product.name;
             let value = {
                 quantity: orderDetailList[i].quantity,
@@ -29,10 +32,6 @@ router.get('/cart', async (req, res) => {
         }
         req.session["cart"] = dict;
         console.log("cartSes", req.session.cart)
-
-    } else {
-        req.session["cart"] = cartSession;
-    }
 
     res.render('order/cart', { orderList: orderDetailList, subTotal: subTotal });
 })
@@ -69,15 +68,9 @@ router.get('/edit', async (req, res) => {
 router.get('/addToCart', async (req, res) => {
     const ObjectID = require('mongodb').ObjectID;
 
-    const curUser = req.session.User;
-    if (!curUser){
-        let messageerror = 'add to cart, not login!';
-        console.log('add to cart, not login!');
-        res.render('test', {message:messageerror})
-        return;
-    }
+    const curUser = getCurrentUserSession(req,res);
+
     console.log('add to cart: user:', curUser)
-    const userId = ObjectID(curUser.id);
 
     const id = req.query.id;
     let inputQuantity = req.query.qt;
@@ -101,7 +94,7 @@ router.get('/addToCart', async (req, res) => {
         res.redirect('/orderDetail/cart')
     } else {
         let object = {
-            userId: userId,
+            userId: curUser.userId,
             productId: productId,
             product: product,
             quantity: inputQuantity,
