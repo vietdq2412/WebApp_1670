@@ -16,11 +16,12 @@ router.post('/login', async (req, res) => {
     if (user == -1) {
         res.end('login invalid!');
     } else {
-        req.session.User = {
+        req.session["User"] = {
             userId: user._id,
             username: username,
             role: user.role
         }
+        console.log('/login user sess: ', req.session.User.username)
         res.redirect('/test')
     }
 })

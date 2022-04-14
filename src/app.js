@@ -63,9 +63,12 @@ app.get('/', (req,res) => {
 })
 
 app.get('/test', (req,res) => {
-    let id = req.session.userId;
-    let name = req.session.username;
-    let role = req.session.role
+    const appUser = req.session.User;
+
+    let id = appUser.userId;
+    let name = appUser.username;
+    let role = appUser.role
+
 
     console.log(id)
     console.log(name)
@@ -76,6 +79,7 @@ app.get('/test', (req,res) => {
         username: name,
         role: role
     }
+    console.log("test user ", user)
     res.render('test', {user:user})
 })
 
