@@ -23,8 +23,9 @@
 				<div class="form-group">
 					<label >Category Name :</label>
 					<select class="form-control" name="txtCategory"  id="{{product.categories}}" >
-                        {{#each categories}}
-                        <option value="{{_id}}">{{name}}</option>
+						<option value="{{product.category._id}}" selected>{{product.category.name}}</option>
+                        {{#each categories as |cat|}}
+                        <option value="{{cat._id}}">{{cat.name}}</option>
                         {{/each}}
 					</select>
 				</div>
