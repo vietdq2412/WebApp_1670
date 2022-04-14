@@ -39,9 +39,11 @@ router.get('/addCart',(req,res)=>{
 var products = []
 router.get('/buy',(req,res)=>{    
     products = []
-    products.push({'id':1,'name':'laptop'})
-    products.push({'id':2,'name':'book'})
-    products.push({'id':3,'name':'phone'})
+    products.push({'id':1,'name':'20 vạn dặm dưới đáy biển'})
+    products.push({'id':2,'name':'nhà giả kim'})
+    products.push({'id':3,'name':'shin'})
+    products.push({'id':4,'name':'Doremon'})
+    products.push({'id':5,'name':'To kill a Mocking bird'})
     res.render('buy',{'products':products})
 })
 
