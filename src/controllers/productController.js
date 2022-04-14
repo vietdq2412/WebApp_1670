@@ -2,7 +2,7 @@ const express = require('express');
 const req = require('express/lib/request');
 const async = require('hbs/lib/async');
 const router = express.Router()
-const { insertObject, checkUserRole, search, PRODUCT_TABLE, CATEGORY_TABLE, searchOne } = require('../databaseHandler')
+const { insertObject, checkUserRole, search,deleteProductById, PRODUCT_TABLE, CATEGORY_TABLE, searchOne } = require('../databaseHandler')
 
 router.get('/', async (req, res) => {
     // if (req.session.username) {
@@ -66,6 +66,15 @@ router.get('/edit', async (req, res) => {
     console.log('cat',product.category.name)
     res.render('product/editProductForm', {product:product, categories})
 })
+
+
+///delete 
+router.get('/delete', async(req,res)=>{
+    const id = req.query.id
+    const collectionName ='Product'
+    await deleteProductById(collectionName,id)
+    res.redirect('/product')
+  })
 
 ///detail
 router.get('/detail', async (req, res) => {

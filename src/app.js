@@ -75,21 +75,21 @@ app.get('/test', (req,res) => {
 })
 
 ///delete
-app.get('/delete', async(req,res)=>{
-    const id = req.query.id
-    const collectionName ='Product'
-    await deleteProductById(collectionName,id)
-    res.redirect('product')
-})
+//  app.get('/delete', async(req,res)=>{
+//    const id = req.query.id
+//    const collectionName ='Product'
+//    await deleteProductById(collectionName,id)
+//    res.redirect('product')
+//  })
 
-app.get('/product/edit',async(req,res)=>{
-    const id = req.query.id
-    const collectionName = 'Product'
-    const document = await getProductById(collectionName,id)
-    console.log(document)
-    res.render('edit',{product:document})
+// app.get('/product/edit',async(req,res)=>{
+//     const id = req.query.id
+//     const collectionName = 'Product'
+//     const document = await getProductById(collectionName,id)
+//     console.log(document)
+//     res.render('edit',{product:document})
 
-})
+// })
 
 
 
