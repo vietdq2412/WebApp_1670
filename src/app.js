@@ -7,20 +7,24 @@ const app = express()
 
 app.engine('hbs', expressHbs.engine({
     extname: '.hbs'
-}) )
+}))
 app.set('view engine', 'hbs')
 app.set('views', path.join(__dirname + '/resources/views'));
-
 
 
 app.use(express.static(path.join(__dirname + '/resources/public')));
 
 app.use(express.urlencoded({
-    extended:true
+    extended: true
 }))
 
 
-app.use(session({ secret: 'nhom 1 0902', cookie: { maxAge: 60*60*24*1000 }, saveUninitialized:false, resave: false}))
+app.use(session({
+    secret: 'nhom 1 0902',
+    cookie: {maxAge: 60 * 60 * 24 * 1000},
+    saveUninitialized: false,
+    resave: false
+}))
 
 ////////////admin
 const adminController = require('./controllers/adminController')
@@ -58,11 +62,11 @@ app.use('/order', orderController, express.static(path.join(__dirname, '/resourc
 ///////////////////
 
 
-app.get('/', (req,res) => {
+app.get('/', (req, res) => {
     res.render('index')
 })
 
-app.get('/test', (req,res) => {
+app.get('/test', (req, res) => {
     const appUser = req.session.User;
 
     let id = appUser.userId;
@@ -70,11 +74,11 @@ app.get('/test', (req,res) => {
     let role = appUser.role
 
     let user = {
-        id : id,
+        id: id,
         username: name,
         role: role
     }
-    res.render('test', {user:user})
+    res.render('test', {user: user})
 })
 
 const PORT = process.env.PORT || 5000

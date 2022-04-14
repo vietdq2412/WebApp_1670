@@ -1,0 +1,120 @@
+<body>
+<!-- Page Header Start -->
+<div class="container-fluid bg-secondary mb-5">
+    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+        <h1 class="font-weight-semi-bold text-uppercase mb-3">Shopping Cart</h1>
+        <div class="d-inline-flex">
+            <p class="m-0"><a href="">Home</a></p>
+            <p class="m-0 px-2">-</p>
+            <p class="m-0">Shopping Cart</p>
+        </div>
+    </div>
+</div>
+<!-- Page Header End -->
+
+
+<!-- Cart Start -->
+<div class="container-fluid pt-5">
+    <div class="row px-xl-5">
+        <div class="col-lg-8 table-responsive mb-5">
+            <table class="table table-bordered text-center mb-0">
+                <thead class="bg-secondary text-dark">
+                <tr>
+                    <th></th>
+                    <th>Products</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                    <th>Remove</th>
+                </tr>
+                </thead>
+                <tbody class="align-middle">
+                {{#each orderList }}
+                    <tr onload="subtotal()">
+                        <td><img src="{{product.image}}" alt="" style="width: 50px;"></td>
+                        <td class="align-middle">{{product.name}}</td>
+                        <td class="align-middle">${{product.price}}</td>
+                        <td class="align-middle">
+                            <div class="input-group quantity mx-auto" style="width: 100px;">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-sm btn-primary btn-minus"
+                                            onclick="qt_update('{{_id}}','minus')">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
+                                <input id="qt{{_id}}" type="text"
+                                       class="form-control form-control-sm bg-secondary text-center"
+                                       value="{{quantity}}">
+                                <div class="input-group-btn" onclick="qt_update('{{_id}}','plus')">
+                                    <button class="btn btn-sm btn-primary btn-plus">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="align-middle" id="totalItem{{_id}}">${{total}}</td>
+                        <td class="align-middle">
+                            <button onclick="redirectW_id('{{_id}}')"
+                                    class="btn btn-sm btn-primary"><i class="fa fa-times"></i></button>
+                        </td>
+                    </tr>
+                {{!-- <h1>d{{sum 1 2}}</h1> --}}
+
+                {{/each}}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-lg-4">
+
+            <div class="card border-secondary mb-5">
+                <div class="card-header bg-secondary border-0">
+                    <h4 class="font-weight-semi-bold m-0">Delivery information</h4>
+                </div>
+
+                <div class="card-body" id="checkout">
+                    <div class="d-flex justify-content-between mb-3 pt-1">
+                        <h6 class="font-weight-medium">Name</h6>
+                        <h6 class="font-weight-medium">asfjasksa</h6>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <h6 class="font-weight-medium">Phone</h6>
+                        <h6 class="font-weight-medium"><i id="phone">123456789</i></h6>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <h6 class="font-weight-medium">Address: </h6>
+                        <h6 class="font-weight-medium"><i id="phone"></i></h6>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <h6 class="font-weight-medium"></h6>
+                        <p class="font-weight-medium"><i id="phone">sfsf aasds adasdsa asdsfsf aasds adasdsa asdsfsf aasds adasdsa asd</i></p>
+                    </div>
+
+                    <div class="card-footer border-secondary bg-transparent">
+                        <div class="d-flex justify-content-between mt-2">
+                            <h5 class="font-weight-bold">Total</h5>
+                            <h5 class="font-weight-bold">$<i id="total"></i></h5>
+                        </div>
+                        <button class="btn btn-block btn-primary my-3 py-3"
+                                onclick="checkout()">Cancel Request
+                        </button>
+                    </div>
+                </div>
+                <script>
+                    let subtt = document.getElementById('subtotal').textContent;
+                    let total = parseInt(subtt) + 10;
+                    document.getElementById('total').innerHTML = total;
+
+                    function checkout() {
+                        window.location.href = "/order/checkout?total=" + total;
+                    }
+                </script>
+            </div>
+        </div>
+    </div>
+    <!-- Cart End -->
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+</body>

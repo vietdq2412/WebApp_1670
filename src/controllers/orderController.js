@@ -27,6 +27,10 @@ router.get('/checkout', async (req, res) => {
     res.render('order/checkout', { orderList: orderList, total: total });
 })
 
+router.get('/detail', async (req, res) => {
+   res.render('order/orderDetail')
+});
+
 router.post('/checkout', async (req, res) => {
     const curUser = getCurrentUserSession(req,res);
 
