@@ -11,6 +11,8 @@ app.engine('hbs', expressHbs.engine({
 app.set('view engine', 'hbs')
 app.set('views', path.join(__dirname + '/resources/views'));
 
+
+
 app.use(express.static(path.join(__dirname + '/resources/public')));
 
 app.use(express.urlencoded({
@@ -35,7 +37,21 @@ app.use('/authen', authenController, express.static(path.join(__dirname, '/resou
 ////////////Product
 const productController = require('./controllers/productController')
 //tat ca dia chi chua /authen  => goi controller authen
-app.use('/product', authenController, express.static(path.join(__dirname, '/resources/public')));
+app.use('/product', productController, express.static(path.join(__dirname, '/resources/public')));
+///////////////////
+
+////////////Category
+const categoryController = require('./controllers/categoryController')
+//tat ca dia chi chua /authen  => goi controller authen
+app.use('/category', categoryController, express.static(path.join(__dirname, '/resources/public')));
+///////////////////
+
+////////////Order
+const orderController = require('./controllers/orderController')
+const async = require('hbs/lib/async')
+const { getProductById, deleteProductById, getProduct } = require('./databaseHandler')
+//tat ca dia chi chua /authen  => goi controller authen
+app.use('/order', orderController, express.static(path.join(__dirname, '/resources/public')));
 ///////////////////
 
 
@@ -43,16 +59,38 @@ app.get('/', (req,res) => {
     res.render('index')
 })
 
-app.get('/shop', (req,res) => {
-    res.render('shop')
+app.get('/test', (req,res) => {
+    let id = req.session.userId;
+    let name = req.session.username;
+    let role = req.session.role
+
+    console.log(id)
+    console.log(name)
+    console.log(role)
+
+    let user = {
+        id : id,
+        username: name,
+        role: role
+    }
+    res.render('test', {user:user})
 })
 
-app.get('/detail', (req,res) => {
-    res.render('detail')
+///delete
+app.get('/delete', async(req,res)=>{
+    const id = req.query.id
+    const collectionName ='Product'
+    await deleteProductById(collectionName,id)
+    res.redirect('product')
 })
 
-app.get('/cart', (req,res) => {
-    res.render('cart')
+app.get('/product/edit',async(req,res)=>{
+    const id = req.query.id
+    const collectionName = 'Product'
+    const document = await getProductById(collectionName,id)
+    console.log(document)
+    res.render('edit',{product:document})
+
 })
 
 app.get('/checkout', (req,res) => {
@@ -61,7 +99,6 @@ app.get('/checkout', (req,res) => {
 
 
 
-
 const PORT = process.env.PORT || 5000
 app.listen(PORT)
-console.log('Server is running at ' + PORT)
+// console.log('Server is running at ' + PORT)
