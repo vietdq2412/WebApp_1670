@@ -1,8 +1,10 @@
 const express = require('express');
 const req = require('express/lib/request');
+const { redirect } = require('express/lib/response');
 const async = require('hbs/lib/async');
+const { ObjectId } = require('mongodb');
 const router = express.Router()
-const { insertObject, checkUserRole, search,deleteProductById, PRODUCT_TABLE, CATEGORY_TABLE, searchOne } = require('../databaseHandler')
+const { insertObject, checkUserRole, search, updateProduct ,deleteProductById, PRODUCT_TABLE, CATEGORY_TABLE, searchOne } = require('../databaseHandler')
 
 router.get('/', async (req, res) => {
     // if (req.session.username) {
@@ -67,6 +69,18 @@ router.get('/edit', async (req, res) => {
     res.render('product/editProductForm', {product:product, categories})
 })
 
+router.post('/edit', async(req,res)=> {
+    const updateId= req.body.txtId; 
+    const name = req.body.txtName;
+    const categoryId = req.body.txtCategory;
+    const price = req.body.txtPrice;
+    const image = req.body.txtImage;
+    const newvalues = {$set: {'name': name, 'price': price ,'categoryId': categoryId,'image': image}}
+    const myquery= {_id:ObjectId(updateId)}
+    const collectionName ='Product'
+    await updateProduct(collectionName,myquery,newvalues)
+    res.redirect('/product')
+})
 
 ///delete 
 router.get('/delete', async(req,res)=>{
