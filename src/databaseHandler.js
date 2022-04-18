@@ -102,8 +102,8 @@ async function checkUserRole(username, password){
 function getCurrentUserSession(req,res){
     const curUser = req.session.User;
     if (!curUser){
-        let messageerror = 'add to cart, not login!';
-        console.log('add to cart, not login!');
+        let messageerror = 'please login first!';
+        console.log('not login!');
         res.render('test', {message:messageerror});
         return;
     }else {

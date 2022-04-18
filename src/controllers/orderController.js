@@ -5,6 +5,35 @@ const {ObjectID} = require("mongodb");
 
 const router = express.Router()
 
+router.get('/detail', async (req, res) => {
+    const curUser = getCurrentUserSession(req,res);
+    if (!curUser){
+        return;
+    }
+    res.render('order/orderDetail')
+});
+
+/////////list order
+router.get('/orderList', async (req, res) => {
+    const curUser = getCurrentUserSession(req,res);
+    if (!curUser){
+        return;
+    }
+
+    let orders;
+    if (curUser.role == 'admin'){
+        orders = await search('', ORDER_TABLE);
+    }else {
+        let condition = { "userId": curUser.userId };
+        orders = await search(condition, ORDER_TABLE);
+    }
+    res.render('order/orderList_Customer', { orders: orders, userRole: curUser.role });
+})
+
+router.get('/remove', async (req, res) => {
+    await remove(ORDER_TABLE);
+    res.redirect('/order/orderList');
+})
 /////////////check out
 router.get('/checkout', async (req, res) => {
     const curUser = getCurrentUserSession(req,res);
@@ -21,15 +50,9 @@ router.get('/checkout', async (req, res) => {
             total: total
         })
     }
-
-    console.log('check out to arr',orderList)
     let total = req.query.total;
     res.render('order/checkout', { orderList: orderList, total: total });
 })
-
-router.get('/detail', async (req, res) => {
-   res.render('order/orderDetail')
-});
 
 router.post('/checkout', async (req, res) => {
     const curUser = getCurrentUserSession(req,res);
@@ -38,7 +61,6 @@ router.post('/checkout', async (req, res) => {
     const address = req.body.address;
     const phone = req.body.phone;
     const email = req.body.email;
-
 
     const orderList = await search('', ORDERDETAIL_TABLE);
     let orderDate = new Date();
@@ -75,14 +97,4 @@ router.post('/checkout', async (req, res) => {
     res.redirect('/order/orderList');
 })
 
-/////////list order
-router.get('/orderList', async (req, res) => {
-    const orders = await search('', ORDER_TABLE);
-    res.render('order/orderList_Customer', { orders: orders });
-})
-
-router.get('/remove', async (req, res) => {
-    await remove(ORDER_TABLE);
-    res.redirect('/order/orderList');
-})
 module.exports = router;
