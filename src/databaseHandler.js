@@ -70,6 +70,12 @@ async function updateObject(condition, collectionName, item){
     await dbo.collection(collectionName).updateOne(condition, item);
 }
 
+async function updateProduct(collectionName,myquery,newvalues){
+    let client = await MongoClient.connect(URL)
+    let dbo = client.db(DATABASE_NAME)
+    await dbo.collection(collectionName).updateOne(myquery,newvalues)
+}
+
 async function deleteProductById(collectionName,id){
     let client = await MongoClient.connect(URL)
     let dbo = client.db(DATABASE_NAME)
@@ -121,6 +127,6 @@ const ORDERDETAIL_TABLE = 'OrderDetail';
 
 
 
-module.exports = {insertObject, checkUserRole, getUser, search , getProduct , deleteProductById, deleteObjectById, updateObject,
+module.exports = {insertObject, checkUserRole, getUser, search , getProduct , updateProduct , deleteProductById, deleteObjectById, updateObject,
      getProductById ,deleteManyObjects ,getCurrentUserSession , searchOne, remove, USERTABLE, CATEGORY_TABLE, PRODUCT_TABLE, ORDER_TABLE, ORDERDETAIL_TABLE};
 
