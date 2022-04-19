@@ -8,8 +8,7 @@ var FeedbackSchema = Schema({
     firstname: {type:String, required:true},
     lastname: {type:String},
     mail: {type:String},
-    nameBook:{type:String},
-    country:{type:String},
+    product:{type:String},
     feedback:{type:String},
     replyFeedbackAdmin:{type:String}
 })
