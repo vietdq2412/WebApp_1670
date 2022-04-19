@@ -24,6 +24,14 @@ async function search(condition, collectionName) {
     return results;
 }
 
+async function sort(condition,sortCondition, collectionName) {
+    const dbo = await getDB();
+    //const searchCondition = new RegExp(condition, 'i')
+    var results = await dbo.collection(collectionName).
+    find(condition).sort(sortCondition).toArray();
+    return results;
+}
+
 async function getProduct(collectionName){
     let client = await MongoClient.connect(URL)
     let dbo = client.db(DATABASE_NAME)
@@ -110,7 +118,7 @@ function getCurrentUserSession(req,res){
     if (!curUser){
         let messageerror = 'please login first!';
         console.log('not login!');
-        res.render('test', {message:messageerror});
+        res.render('login', {message:messageerror});
         return;
     }else {
         console.log('logged in!')
@@ -128,5 +136,6 @@ const ORDERDETAIL_TABLE = 'OrderDetail';
 
 
 module.exports = {insertObject, checkUserRole, getUser, search , getProduct , updateProduct , deleteProductById, deleteObjectById, updateObject,
-     getProductById ,deleteManyObjects ,getCurrentUserSession , searchOne, remove, USERTABLE, CATEGORY_TABLE, PRODUCT_TABLE, ORDER_TABLE, ORDERDETAIL_TABLE};
+     getProductById ,deleteManyObjects , sort,
+     getCurrentUserSession , searchOne, remove, USERTABLE, CATEGORY_TABLE, PRODUCT_TABLE, ORDER_TABLE, ORDERDETAIL_TABLE};
 

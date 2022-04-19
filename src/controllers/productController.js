@@ -4,22 +4,25 @@ const { redirect } = require('express/lib/response');
 const async = require('hbs/lib/async');
 const { ObjectId } = require('mongodb');
 const router = express.Router()
-const { insertObject, checkUserRole, search, updateProduct ,deleteProductById, PRODUCT_TABLE, CATEGORY_TABLE, searchOne } = require('../databaseHandler')
+const { insertObject, checkUserRole, sort, getCurrentUserSession,
+     search, updateProduct ,deleteProductById, PRODUCT_TABLE, CATEGORY_TABLE, searchOne } = require('../databaseHandler')
 
 router.get('/', async (req, res) => {
-    // if (req.session.username) {
-    //     username = req.session.username;
-    // } else {
-    //     res.redirect('/login');
-    // }
+    const curUser = getCurrentUserSession(req,res);
+    if (!curUser){
+        res.render('test', {message: 'please login first!'});
+        return;
+    }
 
-    const products = await search('', PRODUCT_TABLE);
+    let role = curUser.role;
 
-    // if (req.session.username) {
-    //     username = req.session.username;
-    // }
-    console.log(products);
-    res.render('product/listProducts', { products: products})
+    if(role != 'admin'){
+        res.render('test', {message: "d phai admin"})
+        return;
+    }else{
+        const products = await search('', PRODUCT_TABLE);
+        res.render('product/listProducts', { products: products})
+    }
 })
 ///show products
 router.get('/shop',async(req,res)=>{
@@ -101,7 +104,36 @@ router.get('/detail', async (req, res) => {
 })
 
 
-/////order
+/////search
+router.get('/search', async (req, res) => {
+    const content = req.query.content;
+    const condition = { "name":  new RegExp("^.*"+content+".*$")}
 
+    console.log(content)
+    const product = await search(condition, PRODUCT_TABLE);
 
+    console.log('pro: ', product)
+    res.render('shop', {products:product})
+})
+
+///sort 
+/////search
+router.get('/sort', async (req, res) => {
+
+    let sortBy = req.query.by;
+
+    const content = req.query.content;
+    console.log(sortBy);
+    let sortCondition = '';
+    if(sortBy == 'name'){
+         sortCondition = { 'name': 1}
+    }else{
+        sortCondition = {'price':1}
+    }
+    console.log(content)
+    const product = await sort('',sortCondition, PRODUCT_TABLE);
+
+    console.log('pro: ', product)
+    res.render('shop', {products:product})
+})
 module.exports = router;
