@@ -10,7 +10,13 @@ router.get('/detail', async (req, res) => {
     if (!curUser){
         return;
     }
-    res.render('order/orderDetail')
+
+    let ObjectID = require('mongodb').ObjectID;
+    const orderId = req.query.id;
+    let condition = { "_id": ObjectID(orderId) };
+    let item = await searchOne(condition, ORDER_TABLE);
+
+    res.render('order/orderDetail', {item: item})
 });
 
 /////////list order
@@ -95,6 +101,12 @@ router.post('/checkout', async (req, res) => {
     await deleteManyObjects(ORDERDETAIL_TABLE,condition);
     await insertObject(ORDER_TABLE, objectToInsert);
     res.redirect('/order/orderList');
+})
+
+router.get('/delete', async (req, res) => {
+    const id = req.query.id;
+    await deleteObjectById(ORDER_TABLE, id);
+    res.redirect("/order/orderList")
 })
 
 module.exports = router;
