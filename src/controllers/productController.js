@@ -17,7 +17,7 @@ router.get('/', async (req, res) => {
     let role = curUser.role;
 
     if(role != 'admin'){
-        res.render('test', {message: "d phai admin"})
+        res.render('test', {message: "You are not admin"})
         return;
     }else{
         const products = await search('', PRODUCT_TABLE);
@@ -33,8 +33,21 @@ router.get('/shop',async(req,res)=>{
 })
 ///add product
 router.get('/add', async (req, res) => {
+    const curUser = getCurrentUserSession(req,res);
+    if (!curUser){
+        res.render('test', {message: 'please login first!'});
+        return;
+    }
+
+    let role = curUser.role;
+
+    if(role != 'admin'){
+        res.render('test', {message: "You are not admin"})
+        return;
+    }else{
     const categories = await search('', CATEGORY_TABLE);
     res.render('product/addProductForm', {categories:categories})
+    }
 })
 
 router.post('/add', async (req, res) => {

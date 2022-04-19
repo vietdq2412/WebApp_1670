@@ -22,7 +22,7 @@ router.post('/login', async (req, res) => {
             role: user.role
         }
         console.log('/login user sess: ', req.session.User.username)
-        res.redirect('/test')
+        res.redirect('/product/shop')
     }
 })
 /////////
