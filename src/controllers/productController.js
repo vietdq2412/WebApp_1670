@@ -111,9 +111,10 @@ router.get('/detail', async (req, res) => {
     const id = req.query.id;
     var ObjectID = require('mongodb').ObjectID;
     const condition = { "_id": ObjectID(id) };
-    console.log(id)
+    let message = req.session.erro;
+    delete req.session.erro;
     const product = await searchOne(condition, PRODUCT_TABLE);
-    res.render('product/detail', {product:product})
+    res.render('product/detail', {product:product, message:message})
 })
 
 

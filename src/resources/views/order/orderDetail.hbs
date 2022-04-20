@@ -23,7 +23,7 @@
                 <thead class="bg-secondary text-dark">
                 <tr>
                     <th></th>
-                    <th>Products</th>
+                    <th>Book Title</th>
                     <th>Price</th>
                     <th>Quantity</th>
                     <th>Total</th>
@@ -85,11 +85,15 @@
                         </div>
                         <button class="btn btn-block btn-primary my-3 py-3">Cancel
                         </button>
-                        <button class="btn btn-block btn-primary my-3 py-3">Delivery confirm
+                        <button class="btn btn-block btn-primary my-3 py-3" onclick="acceptOrder('{{item._id}}')">Delivery confirm
                         </button>
                     </div>
                 </div>
                 <script>
+                    function acceptOrder(id){
+                        alert(2)
+                        window.location.href = "/order/accept?id="+id;
+                    }
                     function getTotal() {
                         let itemTotal = document.getElementsByClassName('total');
                         let total = 0;

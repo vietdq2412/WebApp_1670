@@ -117,11 +117,9 @@ function getCurrentUserSession(req,res){
     const curUser = req.session.User;
     if (!curUser){
         let messageerror = 'please login first!';
-        console.log('not login!');
         res.render('login', {message:messageerror});
-        return;
+        return null;
     }else {
-        console.log('logged in!')
         req.session.User = curUser;
         return curUser;
     }

@@ -31,7 +31,6 @@ router.get('/cart', async (req, res) => {
             dict[key] = value;
         }
         req.session["cart"] = dict;
-        console.log("cartSes", req.session.cart)
 
     res.render('order/cart', { orderList: orderDetailList, subTotal: subTotal });
 })
@@ -68,8 +67,10 @@ router.get('/edit', async (req, res) => {
 router.get('/addToCart', async (req, res) => {
     const ObjectID = require('mongodb').ObjectID;
     const curUser = getCurrentUserSession(req,res);
-
-    console.log('add to cart: user:', curUser)
+    if (curUser == null){
+        res.redirect("/authen/login");
+        return;
+    }
 
     const id = req.query.id;
     let inputQuantity = req.query.qt;
@@ -78,6 +79,13 @@ router.get('/addToCart', async (req, res) => {
     let product = await searchOne(condition, PRODUCT_TABLE);
     let productId = product._id;
 
+    if (inputQuantity > product.quantity){
+        console.log("over quantity!");
+        req.session.erro = "Over quantity!";
+        res.redirect("/product/detail?id="+productId);
+        return;
+    }
+
     const itemCondition = { "product": Object(product) };
     let item = await searchOne(itemCondition, ORDERDETAIL_TABLE);
 
@@ -85,6 +93,11 @@ router.get('/addToCart', async (req, res) => {
     let total = parseInt(product.price) * parseInt(inputQuantity);
     if (item != null) {
         qt = parseInt(item.quantity) + parseInt(inputQuantity);
+        if (qt > product.quantity){
+            req.session.erro = "Over quantity!";
+            res.redirect("/product/detail?id="+productId);
+            return;
+        }
         total = product.price * qt;
         let editData = {
             $set: { quantity: qt, total: total }

@@ -5,12 +5,22 @@ const {ObjectID} = require("mongodb");
 
 const router = express.Router()
 
+router.get('/accept', async (req, res) =>{
+    let orderId = req.query.id;
+
+    let condition = {"_id": ObjectID(orderId)};
+    let data = {
+        $set: {status : "shipping"}
+    }
+    await updateObject(condition, ORDER_TABLE, data);
+    res.redirect("/order/orderList");
+})
+
 router.get('/detail', async (req, res) => {
     const curUser = getCurrentUserSession(req,res);
     if (!curUser){
         return;
     }
-
     let ObjectID = require('mongodb').ObjectID;
     const orderId = req.query.id;
     let condition = { "_id": ObjectID(orderId) };
@@ -25,7 +35,6 @@ router.get('/orderList', async (req, res) => {
     if (!curUser){
         return;
     }
-
     let orders;
     if (curUser.role == 'admin'){
         orders = await search('', ORDER_TABLE);
@@ -43,9 +52,7 @@ router.get('/remove', async (req, res) => {
 /////////////check out
 router.get('/checkout', async (req, res) => {
     const curUser = getCurrentUserSession(req,res);
-
     let list = req.session['cart'];
-    console.log('check out', list)
     let orderList = [];
     for (let key in list) {
         const qt = list[key].quantity
@@ -81,7 +88,6 @@ router.post('/checkout', async (req, res) => {
         items: Object(orderList),
         status: 'order'
     }
-    let ObjectID = require('mongodb').ObjectID;
 
     //decrease quantity of book in stock
     for(let i = 0; i< orderList.length; i++){

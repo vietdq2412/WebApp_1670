@@ -1,15 +1,13 @@
-<h1>List Orders</h1>
 
 <table class="table table-striped">
     <thead>
     <tr>
         <th>Name</th>
         <th>Phone</th>
-        <th>Status</th>
         <th>Delivery Address</th>
         <th>Order date</th>
+        <th>Status</th>
         <th>Detail</th>
-        <th>Accept</th>
         <th>Cancel</th>
 
 
@@ -21,12 +19,10 @@
         <tr>
             <td>{{name}}</td>
             <td>{{phone}}</td>
-            <td>{{status}}</td>
             <td>{{address}}</td>
             <td onload="formatDate(this)">{{date}}</td>
-
+            <td>{{status}}</td>
             <td><a href="/order/detail?id={{_id}}">Detail</a></td>
-            <td><a href="/order/accept?id={{_id}}">Accept</a></td>
             <td class="align-middle" style="text-align: center">
                 <button onclick="delete_id('{{_id}}')" class="btn btn-sm btn-primary" style="margin-right: 20%">
                     <i class="fa fa-times"></i></button>
