@@ -4,10 +4,11 @@ const router = express.Router()
 const { insertObject, getUser, USERTABLE } = require('../databaseHandler')
 
 ///////////Login
-router.get('/login', (req, res) => {
+router.get('/login',  (req, res) => {
     let error = req.session.error;
     res.render('login', {layout: 'layout_signin', error:error})
 })
+
 router.post('/login', async (req, res) => {
     const username = req.body.txtName;
     const password = req.body.txtPassword;
@@ -19,7 +20,7 @@ router.post('/login', async (req, res) => {
         req.session["User"] = {
             userpass: password,
             username: username,
-            role: customer
+            role: user.role
         }
         res.redirect('/')
     }
@@ -36,15 +37,12 @@ router.post('/register', async (req, res) => {
     const password = req.body.txtPassword;
     const role = req.body.role;
 
-    console.log('test body: ', req.body.a)
-
-    console.log("txtname: ", name)
     const objectToInsert = {
         username: name,
         password: password,
         role: role
     }
-console.log("register",objectToInsert);
+
     await insertObject(USERTABLE, objectToInsert)
     res.redirect('/authen/login')
 });
