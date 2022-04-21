@@ -67,7 +67,7 @@ app.use('/order', orderController, express.static(path.join(__dirname, '/resourc
 
 
 app.get('/', (req, res) => {
-    res.render('adminIndex')
+    res.render('index')
 })
 
 app.get('/error', (req, res) => {
