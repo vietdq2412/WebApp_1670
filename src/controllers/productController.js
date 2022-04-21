@@ -26,9 +26,7 @@ router.get('/', async (req, res) => {
 })
 ///show products
 router.get('/shop',async(req,res)=>{
-    console.log(1)
     const products = await search('',PRODUCT_TABLE);
-    console.log(products);
     res.render('shop',{products: products})
 })
 ///add product

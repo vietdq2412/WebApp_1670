@@ -101,7 +101,8 @@ router.post('/checkout', async (req, res) => {
     const phone = req.body.phone;
     const email = req.body.email;
 
-    const orderList = await search('', ORDERDETAIL_TABLE);
+    let condition = {"userId" : curUser.userId}
+    const orderList = await search(condition, ORDERDETAIL_TABLE);
     let orderDate = new Date();
 
     let objectToInsert = {
@@ -129,7 +130,6 @@ router.post('/checkout', async (req, res) => {
         await updateObject(condition, PRODUCT_TABLE, updateData);
     }
 
-    let condition = { "userId": curUser.userId };
     await deleteManyObjects(ORDERDETAIL_TABLE,condition);
     await insertObject(ORDER_TABLE, objectToInsert);
     res.redirect('/order/orderList');
