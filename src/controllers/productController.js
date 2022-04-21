@@ -26,9 +26,7 @@ router.get('/', async (req, res) => {
 })
 ///show products
 router.get('/shop',async(req,res)=>{
-    console.log(1)
     const products = await search('',PRODUCT_TABLE);
-    console.log(products);
     res.render('shop',{products: products})
 })
 ///add product
@@ -81,7 +79,6 @@ router.get('/edit', async (req, res) => {
     const product = await searchOne(condition, PRODUCT_TABLE);
 
     const categories = await search('', CATEGORY_TABLE);
-    console.log('cat',product.category.name)
     res.render('product/editProductForm', {product:product, categories})
 })
 
@@ -122,11 +119,8 @@ router.get('/detail', async (req, res) => {
 router.get('/search', async (req, res) => {
     const content = req.query.content;
     const condition = { "name":  new RegExp("^.*"+content+".*$")}
-
-    console.log(content)
     const product = await search(condition, PRODUCT_TABLE);
 
-    console.log('pro: ', product)
     res.render('shop', {products:product})
 })
 

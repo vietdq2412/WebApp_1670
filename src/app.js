@@ -32,6 +32,10 @@ const adminController = require('./controllers/adminController')
 app.use('/admin', adminController, express.static(path.join(__dirname, '/resources/public')));
 ///////////////////
 
+const userController = require('./controllers/userController')
+app.use('/user', userController, express.static(path.join(__dirname, '/resources/public')));
+
+
 ////////////Authentication
 const authenController = require('./controllers/authenController')
 //tat ca dia chi chua /authen  => goi controller authen
@@ -68,8 +72,9 @@ app.get('/', (req, res) => {
 
 app.get('/error', (req, res) => {
     let message = req.session.message;
-    let error = req.session.error;
-    res.render('erroPage', {message:message, error:error})
+    let err = req.session.error;
+    console.log("erro:", err);
+    res.render('erroPage', {message:message, error:err})
 })
 
 app.get('/test', (req, res) => {

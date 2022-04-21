@@ -8,7 +8,7 @@ const router = express.Router()
 router.get('/accept', async (req, res) =>{
     const curUser = getCurrentUserSession(req,res);
     if (!curUser){
-        res.render('login', {message: 'please login first!'});
+        res.render('login', {error: 'please login first!'});
         return;
     }
 
@@ -22,6 +22,7 @@ router.get('/accept', async (req, res) =>{
         await updateObject(condition, ORDER_TABLE, data);
         res.redirect("/order/orderList");
     }else{
+        req.session.error = "you do not have permission to access this page!"
         res.redirect('/error')
     }
 });
@@ -29,7 +30,7 @@ router.get('/accept', async (req, res) =>{
 router.get('/detail', async (req, res) => {
     const curUser = getCurrentUserSession(req,res);
     if (!curUser){
-        res.render('login', {message: 'please login first!'});
+        res.render('login', {error: 'please login first!'});
         return;
     }
     let ObjectID = require('mongodb').ObjectID;
@@ -44,7 +45,7 @@ router.get('/detail', async (req, res) => {
 router.get('/orderList', async (req, res) => {
     const curUser = getCurrentUserSession(req,res);
     if (!curUser){
-        res.render('login', {message: 'please login first!'});
+        res.render('login', {error: 'please login first!'});
         return;
     }
     let orders;
@@ -69,7 +70,7 @@ router.get('/remove', async (req, res) => {
 router.get('/checkout', async (req, res) => {
     const curUser = getCurrentUserSession(req,res);
     if (!curUser){
-        res.render('login', {message: 'please login first!'});
+        res.render('login', {error: 'please login first!'});
         return;
     }
 
@@ -100,7 +101,8 @@ router.post('/checkout', async (req, res) => {
     const phone = req.body.phone;
     const email = req.body.email;
 
-    const orderList = await search('', ORDERDETAIL_TABLE);
+    let condition = {"userId" : curUser.userId}
+    const orderList = await search(condition, ORDERDETAIL_TABLE);
     let orderDate = new Date();
 
     let objectToInsert = {
@@ -128,7 +130,6 @@ router.post('/checkout', async (req, res) => {
         await updateObject(condition, PRODUCT_TABLE, updateData);
     }
 
-    let condition = { "userId": curUser.userId };
     await deleteManyObjects(ORDERDETAIL_TABLE,condition);
     await insertObject(ORDER_TABLE, objectToInsert);
     res.redirect('/order/orderList');
@@ -146,6 +147,7 @@ router.get('/delete', async (req, res) => {
         await deleteObjectById(ORDER_TABLE, id);
         res.redirect("/order/orderList")
     }else{
+        req.session.error = "you do not have permission to access this page!"
         res.redirect('/error')
     }
 })
