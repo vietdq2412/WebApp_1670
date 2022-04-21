@@ -8,7 +8,7 @@ const router = express.Router()
 router.get('/cart', async (req, res) => {
     const curUser = getCurrentUserSession(req,res);
     if (!curUser){
-        res.render('test', {message: 'please login first!'});
+        res.render('login', {message: 'please login first!'});
         return;
     }
 
@@ -36,12 +36,24 @@ router.get('/cart', async (req, res) => {
 })
 
 router.get('/delete', async (req, res) => {
+    const curUser = getCurrentUserSession(req,res);
+    if (!curUser){
+        res.render('login', {message: 'please login first!'});
+        return;
+    }
+
     const id = req.query.id;
     await deleteObjectById(ORDERDETAIL_TABLE, id);
     res.redirect("/orderDetail/cart")
 })
 
 router.get('/edit', async (req, res) => {
+    const curUser = getCurrentUserSession(req,res);
+    if (!curUser){
+        res.render('login', {message: 'please login first!'});
+        return;
+    }
+
     const id = req.query.id;
     let action = req.query.action;
 

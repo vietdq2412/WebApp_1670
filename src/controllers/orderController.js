@@ -6,6 +6,12 @@ const {ObjectID} = require("mongodb");
 const router = express.Router()
 
 router.get('/accept', async (req, res) =>{
+    const curUser = getCurrentUserSession(req,res);
+    if (!curUser){
+        res.render('login', {message: 'please login first!'});
+        return;
+    }
+
     let orderId = req.query.id;
 
     let condition = {"_id": ObjectID(orderId)};
@@ -19,6 +25,7 @@ router.get('/accept', async (req, res) =>{
 router.get('/detail', async (req, res) => {
     const curUser = getCurrentUserSession(req,res);
     if (!curUser){
+        res.render('login', {message: 'please login first!'});
         return;
     }
     let ObjectID = require('mongodb').ObjectID;
@@ -33,6 +40,7 @@ router.get('/detail', async (req, res) => {
 router.get('/orderList', async (req, res) => {
     const curUser = getCurrentUserSession(req,res);
     if (!curUser){
+        res.render('login', {message: 'please login first!'});
         return;
     }
     let orders;
@@ -52,6 +60,11 @@ router.get('/remove', async (req, res) => {
 /////////////check out
 router.get('/checkout', async (req, res) => {
     const curUser = getCurrentUserSession(req,res);
+    if (!curUser){
+        res.render('login', {message: 'please login first!'});
+        return;
+    }
+
     let list = req.session['cart'];
     let orderList = [];
     for (let key in list) {
@@ -69,6 +82,10 @@ router.get('/checkout', async (req, res) => {
 
 router.post('/checkout', async (req, res) => {
     const curUser = getCurrentUserSession(req,res);
+    if (!curUser){
+        res.render('login', {message: 'please login first!'});
+        return;
+    }
 
     const name = req.body.name;
     const address = req.body.address;
@@ -110,6 +127,12 @@ router.post('/checkout', async (req, res) => {
 })
 
 router.get('/delete', async (req, res) => {
+    const curUser = getCurrentUserSession(req,res);
+    if (!curUser){
+        res.render('login', {message: 'please login first!'});
+        return;
+    }
+
     const id = req.query.id;
     await deleteObjectById(ORDER_TABLE, id);
     res.redirect("/order/orderList")
