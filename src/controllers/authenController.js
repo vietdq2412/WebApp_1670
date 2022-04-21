@@ -20,9 +20,7 @@ router.post('/login', async (req, res) => {
             username: username,
             role: customer
         }
-        console.log('/login user sess: ', req.session.User.username)
         res.redirect('/')
-    
     }
 })
 /////////

@@ -5,21 +5,49 @@ const {ObjectID} = require("mongodb");
 
 const router = express.Router()
 
+router.get('/accept', async (req, res) =>{
+    const curUser = getCurrentUserSession(req,res);
+    if (!curUser){
+        res.render('login', {error: 'please login first!'});
+        return;
+    }
+
+    if (curUser.role == 'admin'){
+        let orderId = req.query.id;
+
+        let condition = {"_id": ObjectID(orderId)};
+        let data = {
+            $set: {status : "shipping"}
+        }
+        await updateObject(condition, ORDER_TABLE, data);
+        res.redirect("/order/orderList");
+    }else{
+        req.session.error = "you do not have permission to access this page!"
+        res.redirect('/error')
+    }
+});
+
 router.get('/detail', async (req, res) => {
     const curUser = getCurrentUserSession(req,res);
     if (!curUser){
+        res.render('login', {error: 'please login first!'});
         return;
     }
-    res.render('order/orderDetail')
+    let ObjectID = require('mongodb').ObjectID;
+    const orderId = req.query.id;
+    let condition = { "_id": ObjectID(orderId) };
+    let item = await searchOne(condition, ORDER_TABLE);
+
+    res.render('order/orderDetail', {item: item, userRole:curUser.role})
 });
 
 /////////list order
 router.get('/orderList', async (req, res) => {
     const curUser = getCurrentUserSession(req,res);
     if (!curUser){
+        res.render('login', {error: 'please login first!'});
         return;
     }
-
     let orders;
     if (curUser.role == 'admin'){
         orders = await search('', ORDER_TABLE);
@@ -31,15 +59,22 @@ router.get('/orderList', async (req, res) => {
 })
 
 router.get('/remove', async (req, res) => {
-    await remove(ORDER_TABLE);
-    res.redirect('/order/orderList');
+    if (curUser.role == 'admin'){
+        await remove(ORDER_TABLE);
+        res.redirect('/order/orderList');
+    }else{
+        res.redirect('/error')
+    }
 })
 /////////////check out
 router.get('/checkout', async (req, res) => {
     const curUser = getCurrentUserSession(req,res);
+    if (!curUser){
+        res.render('login', {error: 'please login first!'});
+        return;
+    }
 
     let list = req.session['cart'];
-    console.log('check out', list)
     let orderList = [];
     for (let key in list) {
         const qt = list[key].quantity
@@ -56,13 +91,18 @@ router.get('/checkout', async (req, res) => {
 
 router.post('/checkout', async (req, res) => {
     const curUser = getCurrentUserSession(req,res);
+    if (!curUser){
+        res.render('login', {message: 'please login first!'});
+        return;
+    }
 
     const name = req.body.name;
     const address = req.body.address;
     const phone = req.body.phone;
     const email = req.body.email;
 
-    const orderList = await search('', ORDERDETAIL_TABLE);
+    let condition = {"userId" : curUser.userId}
+    const orderList = await search(condition, ORDERDETAIL_TABLE);
     let orderDate = new Date();
 
     let objectToInsert = {
@@ -75,7 +115,6 @@ router.post('/checkout', async (req, res) => {
         items: Object(orderList),
         status: 'order'
     }
-    let ObjectID = require('mongodb').ObjectID;
 
     //decrease quantity of book in stock
     for(let i = 0; i< orderList.length; i++){
@@ -91,10 +130,26 @@ router.post('/checkout', async (req, res) => {
         await updateObject(condition, PRODUCT_TABLE, updateData);
     }
 
-    let condition = { "userId": curUser.userId };
     await deleteManyObjects(ORDERDETAIL_TABLE,condition);
     await insertObject(ORDER_TABLE, objectToInsert);
     res.redirect('/order/orderList');
+})
+
+router.get('/delete', async (req, res) => {
+    const curUser = getCurrentUserSession(req,res);
+    if (!curUser){
+        res.render('login', {message: 'please login first!'});
+        return;
+    }
+
+    if (curUser.role == 'admin'){
+        const id = req.query.id;
+        await deleteObjectById(ORDER_TABLE, id);
+        res.redirect("/order/orderList")
+    }else{
+        req.session.error = "you do not have permission to access this page!"
+        res.redirect('/error')
+    }
 })
 
 module.exports = router;

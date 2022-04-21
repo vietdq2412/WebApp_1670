@@ -1,4 +1,4 @@
-<body>
+<body onload="getTotal()">
 <!-- Page Header Start -->
 <div class="container-fluid bg-secondary mb-5">
     <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
@@ -6,12 +6,11 @@
         <div class="d-inline-flex">
             <p class="m-0"><a href="">Home</a></p>
             <p class="m-0 px-2">-</p>
-            <p class="m-0">Shopping Cart</p>
+            <p class="m-0">Order detail</p>
         </div>
     </div>
 </div>
 <!-- Page Header End -->
-
 
 <!-- Cart Start -->
 <div class="container-fluid pt-5">
@@ -21,7 +20,7 @@
                 <thead class="bg-secondary text-dark">
                 <tr>
                     <th></th>
-                    <th>Products</th>
+                    <th>Book Title</th>
                     <th>Price</th>
                     <th>Quantity</th>
                     <th>Total</th>
@@ -29,32 +28,17 @@
                 </tr>
                 </thead>
                 <tbody class="align-middle">
-                {{#each orderList }}
+                {{#each item.items as |i|}}
                     <tr onload="subtotal()">
-                        <td><img src="{{product.image}}" alt="" style="width: 50px;"></td>
-                        <td class="align-middle">{{product.name}}</td>
-                        <td class="align-middle">${{product.price}}</td>
+                        <td><img src="{{i.product.image}}" alt="" style="width: 50px;"></td>
+                        <td class="align-middle">{{i.product.name}}</td>
+                        <td class="align-middle">${{i.product.price}}</td>
                         <td class="align-middle">
-                            <div class="input-group quantity mx-auto" style="width: 100px;">
-                                <div class="input-group-btn">
-                                    <button class="btn btn-sm btn-primary btn-minus"
-                                            onclick="qt_update('{{_id}}','minus')">
-                                        <i class="fa fa-minus"></i>
-                                    </button>
-                                </div>
-                                <input id="qt{{_id}}" type="text"
-                                       class="form-control form-control-sm bg-secondary text-center"
-                                       value="{{quantity}}">
-                                <div class="input-group-btn" onclick="qt_update('{{_id}}','plus')">
-                                    <button class="btn btn-sm btn-primary btn-plus">
-                                        <i class="fa fa-plus"></i>
-                                    </button>
-                                </div>
-                            </div>
+                            {{i.quantity}}
                         </td>
-                        <td class="align-middle" id="totalItem{{_id}}">${{total}}</td>
+                        <td class="align-middle total" id="{{i.total}}">${{i.total}}</td>
                         <td class="align-middle">
-                            <button onclick="redirectW_id('{{_id}}')"
+                            <button onclick="delete_id('{{i._id}}')"
                                     class="btn btn-sm btn-primary"><i class="fa fa-times"></i></button>
                         </td>
                     </tr>
@@ -74,11 +58,11 @@
                 <div class="card-body" id="checkout">
                     <div class="d-flex justify-content-between mb-3 pt-1">
                         <h6 class="font-weight-medium">Name</h6>
-                        <h6 class="font-weight-medium">asfjasksa</h6>
+                        <h6 class="font-weight-medium">{{item.name}}</h6>
                     </div>
                     <div class="d-flex justify-content-between">
                         <h6 class="font-weight-medium">Phone</h6>
-                        <h6 class="font-weight-medium"><i id="phone">123456789</i></h6>
+                        <h6 class="font-weight-medium"><i id="phone">{{item.phone}}</i></h6>
                     </div>
 
                     <div class="d-flex justify-content-between">
@@ -88,7 +72,7 @@
 
                     <div class="d-flex justify-content-between">
                         <h6 class="font-weight-medium"></h6>
-                        <p class="font-weight-medium"><i id="phone">sfsf aasds adasdsa asdsfsf aasds adasdsa asdsfsf aasds adasdsa asd</i></p>
+                        <p class="font-weight-medium"><i id="phone">{{item.address}}</i></p>
                     </div>
 
                     <div class="card-footer border-secondary bg-transparent">
@@ -96,18 +80,26 @@
                             <h5 class="font-weight-bold">Total</h5>
                             <h5 class="font-weight-bold">$<i id="total"></i></h5>
                         </div>
-                        <button class="btn btn-block btn-primary my-3 py-3"
-                                onclick="checkout()">Cancel Request
+                        <button class="btn btn-block btn-primary my-3 py-3">Cancel
+                        </button>
+                        <button class="btn btn-block btn-primary my-3 py-3" onclick="acceptOrder('{{item._id}}')">Delivery confirm
                         </button>
                     </div>
                 </div>
                 <script>
-                    let subtt = document.getElementById('subtotal').textContent;
-                    let total = parseInt(subtt) + 10;
-                    document.getElementById('total').innerHTML = total;
-
-                    function checkout() {
-                        window.location.href = "/order/checkout?total=" + total;
+                    function acceptOrder(id){
+                        alert(2)
+                        window.location.href = "/order/accept?id="+id;
+                    }
+                    function getTotal() {
+                        let itemTotal = document.getElementsByClassName('total');
+                        let total = 0;
+                        for (let i = 0; i < itemTotal.length; i++) {
+                            total += parseInt(itemTotal[i].id);
+                            console.log(total)
+                            console.log(itemTotal[i].id)
+                        }
+                        document.getElementById('total').innerText = total;
                     }
                 </script>
             </div>

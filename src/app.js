@@ -70,6 +70,13 @@ app.get('/', (req, res) => {
     res.render('adminIndex')
 })
 
+app.get('/error', (req, res) => {
+    let message = req.session.message;
+    let err = req.session.error;
+    console.log("erro:", err);
+    res.render('erroPage', {message:message, error:err})
+})
+
 app.get('/test', (req, res) => {
     const appUser = req.session.User;
 

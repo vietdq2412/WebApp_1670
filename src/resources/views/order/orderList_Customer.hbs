@@ -1,39 +1,50 @@
-<h1>List Orders</h1>
 
 <table class="table table-striped">
     <thead>
-        <tr>
-            <th>Name</th>
-            <th>Phone</th>
-            <th>Status</th>
-            <th>Delivery Address</th>
-            <th>Order date</th>
-            <th>Detail</th>
+    <tr>
+        <th>Name</th>
+        <th>Phone</th>
+        <th>Delivery Address</th>
+        <th>Order date</th>
+        <th>Status</th>
+        <th>Detail</th>
+        <th>Cancel</th>
 
 
-        </tr>
+    </tr>
     </thead>
     <tbody>
     <h1>{{userRole}}</h1>
-        {{#each orders}}
+    {{#each orders}}
         <tr>
             <td>{{name}}</td>
             <td>{{phone}}</td>
-            <td>{{status}}</td>
             <td>{{address}}</td>
             <td onload="formatDate(this)">{{date}}</td>
-
-            <td><a href="order/detail?id={{_id}}">Detail</a></td>
+            <td>{{status}}</td>
+            <td><a href="/order/detail?id={{_id}}">Detail</a></td>
+            <td class="align-middle" style="text-align: center">
+                <button onclick="delete_id('{{_id}}')" class="btn btn-sm btn-primary" style="margin-right: 20%">
+                    <i class="fa fa-times"></i></button>
+            </td>
         </tr>
-        {{/each}}
+    {{/each}}
     </tbody>
 </table>
+<input type="text" value="{{userRole}}" disabled>
 <script>
-    function formatDate(){
+    function formatDate() {
         alert(1)
         let date = this.value;
         date = new Date(date);
 
         console.log(date);
     }
+
+    function delete_id(id) {
+        let confirm = window.confirm("Are you sure?");
+        if (confirm) {
+            window.location.href = "/order/delete?id=" + id;
+        }
+    };
 </script>

@@ -4,34 +4,48 @@ const { redirect } = require('express/lib/response');
 const async = require('hbs/lib/async');
 const { ObjectId } = require('mongodb');
 const router = express.Router()
-const { insertObject, checkUserRole, search, updateProduct ,deleteProductById, PRODUCT_TABLE, CATEGORY_TABLE, searchOne } = require('../databaseHandler')
+const { insertObject, checkUserRole, sort, getCurrentUserSession,
+     search, updateProduct ,deleteProductById, PRODUCT_TABLE, CATEGORY_TABLE, searchOne } = require('../databaseHandler')
 
 router.get('/', async (req, res) => {
-    // if (req.session.username) {
-    //     username = req.session.username;
-    // } else {
-    //     res.redirect('/login');
-    // }
+    const curUser = getCurrentUserSession(req,res);
+    if (!curUser){
+        res.render('test', {message: 'please login first!'});
+        return;
+    }
 
-    const products = await search('', PRODUCT_TABLE);
+    let role = curUser.role;
 
-    // if (req.session.username) {
-    //     username = req.session.username;
-    // }
-    console.log(products);
-    res.render('product/listProducts', { products: products})
+    if(role != 'admin'){
+        res.render('test', {message: "You are not admin"})
+        return;
+    }else{
+        const products = await search('', PRODUCT_TABLE);
+        res.render('product/listProducts', { products: products})
+    }
 })
 ///show products
 router.get('/shop',async(req,res)=>{
-    console.log(1)
     const products = await search('',PRODUCT_TABLE);
-    console.log(products);
     res.render('shop',{products: products})
 })
 ///add product
 router.get('/add', async (req, res) => {
+    const curUser = getCurrentUserSession(req,res);
+    if (!curUser){
+        res.render('test', {message: 'please login first!'});
+        return;
+    }
+
+    let role = curUser.role;
+
+    if(role != 'admin'){
+        res.render('test', {message: "You are not admin"})
+        return;
+    }else{
     const categories = await search('', CATEGORY_TABLE);
     res.render('product/addProductForm', {categories:categories})
+    }
 })
 
 router.post('/add', async (req, res) => {
@@ -65,7 +79,6 @@ router.get('/edit', async (req, res) => {
     const product = await searchOne(condition, PRODUCT_TABLE);
 
     const categories = await search('', CATEGORY_TABLE);
-    console.log('cat',product.category.name)
     res.render('product/editProductForm', {product:product, categories})
 })
 
@@ -95,13 +108,40 @@ router.get('/detail', async (req, res) => {
     const id = req.query.id;
     var ObjectID = require('mongodb').ObjectID;
     const condition = { "_id": ObjectID(id) };
-    console.log(id)
+    let message = req.session.erro;
+    delete req.session.erro;
     const product = await searchOne(condition, PRODUCT_TABLE);
-    res.render('product/detail', {product:product})
+    res.render('product/detail', {product:product, message:message})
 })
 
 
-/////order
+/////search
+router.get('/search', async (req, res) => {
+    const content = req.query.content;
+    const condition = { "name":  new RegExp("^.*"+content+".*$")}
+    const product = await search(condition, PRODUCT_TABLE);
 
+    res.render('shop', {products:product})
+})
 
+///sort 
+/////search
+router.get('/sort', async (req, res) => {
+
+    let sortBy = req.query.by;
+
+    const content = req.query.content;
+    console.log(sortBy);
+    let sortCondition = '';
+    if(sortBy == 'name'){
+         sortCondition = { 'name': 1}
+    }else{
+        sortCondition = {'price':1}
+    }
+    console.log(content)
+    const product = await sort('',sortCondition, PRODUCT_TABLE);
+
+    console.log('pro: ', product)
+    res.render('shop', {products:product})
+})
 module.exports = router;

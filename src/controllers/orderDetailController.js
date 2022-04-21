@@ -1,19 +1,21 @@
 const express = require('express');
-const { insertObject, checkUserRole, search, searchOne, deleteObjectById, updateObject, remove, getCurrentUserSession,
-    ORDER_TABLE, ORDERDETAIL_TABLE, PRODUCT_TABLE} = require('../databaseHandler')
+const {
+    insertObject, checkUserRole, search, searchOne, deleteObjectById, updateObject, remove, getCurrentUserSession,
+    ORDER_TABLE, ORDERDETAIL_TABLE, PRODUCT_TABLE
+} = require('../databaseHandler')
 const {ObjectID} = require("mongodb");
 
 const router = express.Router()
 
 router.get('/cart', async (req, res) => {
-    const curUser = getCurrentUserSession(req,res);
-    if (!curUser){
-        res.render('test', {message: 'please login first!'});
+    const curUser = getCurrentUserSession(req, res);
+    if (!curUser) {
+        req.session.error = "please login first!";
+        res.redirect("/authen/login");
         return;
     }
 
-    let ObjectID = require('mongodb').ObjectID;
-    const condition = { "userId": curUser.userId };
+    const condition = {"userId": curUser.userId};
     const orderDetailList = await search(condition, ORDERDETAIL_TABLE);
     let subTotal = 0;
     for (let i = 0; i < orderDetailList.length; i++) {
@@ -22,32 +24,46 @@ router.get('/cart', async (req, res) => {
 
     let dict = {}
     for (let i = 0; i < orderDetailList.length; i++) {
-            let key = orderDetailList[i].product.name;
-            let value = {
-                quantity: orderDetailList[i].quantity,
-                total: orderDetailList[i].total
-            }
-            console.log(key)
-            dict[key] = value;
+        let key = orderDetailList[i].product.name;
+        let value = {
+            quantity: orderDetailList[i].quantity,
+            total: orderDetailList[i].total
         }
-        req.session["cart"] = dict;
-        console.log("cartSes", req.session.cart)
+        dict[key] = value;
+    }
+    req.session["cart"] = dict;
 
-    res.render('order/cart', { orderList: orderDetailList, subTotal: subTotal });
+    if (dict.length <= 0) {
+        req.session.message = "Cart is empty!";
+    }
+    let message = "Cart is empty!";
+    res.render('order/cart', {orderList: orderDetailList, subTotal: subTotal, message: message});
 })
 
 router.get('/delete', async (req, res) => {
+    const curUser = getCurrentUserSession(req, res);
+    if (!curUser) {
+        res.render('login', {message: 'please login first!'});
+        return;
+    }
+
     const id = req.query.id;
     await deleteObjectById(ORDERDETAIL_TABLE, id);
     res.redirect("/orderDetail/cart")
 })
 
 router.get('/edit', async (req, res) => {
+    const curUser = getCurrentUserSession(req, res);
+    if (!curUser) {
+        res.render('login', {message: 'please login first!'});
+        return;
+    }
+
     const id = req.query.id;
     let action = req.query.action;
 
     let ObjectID = require('mongodb').ObjectID;
-    const condition = { "_id": ObjectID(id) };
+    const condition = {"_id": ObjectID(id)};
     let item = await searchOne(condition, ORDERDETAIL_TABLE);
     let qt = 0;
     if (action == 'plus') {
@@ -58,7 +74,7 @@ router.get('/edit', async (req, res) => {
 
     let total = qt * parseInt(item.product.price)
     let newData = {
-        $set: { quantity: qt, total: total }
+        $set: {quantity: qt, total: total}
     };
 
     await updateObject(condition, ORDERDETAIL_TABLE, newData);
@@ -67,29 +83,43 @@ router.get('/edit', async (req, res) => {
 
 router.get('/addToCart', async (req, res) => {
     const ObjectID = require('mongodb').ObjectID;
-    const curUser = getCurrentUserSession(req,res);
-
-    console.log('add to cart: user:', curUser)
+    const curUser = getCurrentUserSession(req, res);
+    if (curUser == null) {
+        res.redirect("/authen/login");
+        return;
+    }
 
     const id = req.query.id;
     let inputQuantity = req.query.qt;
 
-    const condition = { "_id": ObjectID(id) };
+    const condition = {"_id": ObjectID(id)};
     let product = await searchOne(condition, PRODUCT_TABLE);
     let productId = product._id;
 
-    const itemCondition = { "product": Object(product) };
+    if (inputQuantity > product.quantity) {
+        console.log("over quantity!");
+        req.session.erro = "Over quantity!";
+        res.redirect("/product/detail?id=" + productId);
+        return;
+    }
+
+    const itemCondition = {"product": Object(product)};
     let item = await searchOne(itemCondition, ORDERDETAIL_TABLE);
 
     let qt;
     let total = parseInt(product.price) * parseInt(inputQuantity);
     if (item != null) {
         qt = parseInt(item.quantity) + parseInt(inputQuantity);
+        if (qt > product.quantity) {
+            req.session.erro = "Over quantity!";
+            res.redirect("/product/detail?id=" + productId);
+            return;
+        }
         total = product.price * qt;
         let editData = {
-            $set: { quantity: qt, total: total }
+            $set: {quantity: qt, total: total}
         };
-        await updateObject({ "_id": ObjectID(item._id) }, ORDERDETAIL_TABLE, editData);
+        await updateObject({"_id": ObjectID(item._id)}, ORDERDETAIL_TABLE, editData);
         res.redirect('/orderDetail/cart')
     } else {
         let object = {
