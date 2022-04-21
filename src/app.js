@@ -32,6 +32,10 @@ const adminController = require('./controllers/adminController')
 app.use('/admin', adminController, express.static(path.join(__dirname, '/resources/public')));
 ///////////////////
 
+const userController = require('./controllers/userController')
+app.use('/user', userController, express.static(path.join(__dirname, '/resources/public')));
+
+
 ////////////Authentication
 const authenController = require('./controllers/authenController')
 //tat ca dia chi chua /authen  => goi controller authen
@@ -63,7 +67,7 @@ app.use('/order', orderController, express.static(path.join(__dirname, '/resourc
 
 
 app.get('/', (req, res) => {
-    res.render('index')
+    res.render('adminIndex')
 })
 
 app.get('/test', (req, res) => {

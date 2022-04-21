@@ -1,5 +1,5 @@
 const express = require('express')
-
+const async = require('hbs/lib/async')
 const router = express.Router()
 const { insertObject, getUser, USERTABLE } = require('../databaseHandler')
 
@@ -7,7 +7,6 @@ const { insertObject, getUser, USERTABLE } = require('../databaseHandler')
 router.get('/login', (req, res) => {
     res.render('login', {layout: 'layout_signin'})
 })
-
 router.post('/login', async (req, res) => {
     const username = req.body.txtName;
     const password = req.body.txtPassword;
@@ -17,12 +16,13 @@ router.post('/login', async (req, res) => {
         res.end('login invalid!');
     } else {
         req.session["User"] = {
-            userId: user._id,
+            userpass: password,
             username: username,
-            role: user.role
+            role: customer
         }
         console.log('/login user sess: ', req.session.User.username)
-        res.redirect('/test')
+        res.redirect('/')
+    
     }
 })
 /////////
@@ -43,8 +43,8 @@ router.post('/register', async (req, res) => {
         role: role
     }
 
-    await insertObject(USERTABLE, objectToInsert);
-
-    res.redirect('/authen/login')});
+    insertObject(USERTABLE, objectToInsert)
+    res.redirect('/authen/login')
+});
 ////////////////////
 module.exports = router;
