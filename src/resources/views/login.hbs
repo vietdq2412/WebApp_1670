@@ -1,80 +1,82 @@
 <style>
-    .box{
-    background: #ffffff;
-    margin: 0 auto;
-    border: solid 2px black;
-    box-sizing: border-box;
-    padding-left: 200px;
-    padding-right: 200px;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, .3);
-    width: 1000px;
-    height: 500px;
-    margin-left: 300px;
-    margin-top: 50px;
+    .box {
+        position: absolute;
+        background: #ffffff;
+        margin: 0 auto;
+        border: solid 2px black;
+        box-sizing: border-box;
+        padding-left: 200px;
+        padding-right: 200px;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, .3);
+        width: 1000px;
+        height: 500px;
+        margin-left: 300px;
+        margin-top: 50px;
 
-}
+    }
 
-#mess{
-    position: relative;
-    margin: 0 auto;
-}
+    #mess {
+        position: relative;
+        margin: 0 auto;
+    }
 </style>
 
 
 <div class="box">
-    <div id="mess>
-    <h1 ">{{message}}</h1>
-</div>
-  <div class="box-header">
-      
-      <center>
-          
-          <h1 class="mt-5"> Login </h1>
-          
-          <p class="lead"> Already have our account..? </p>
-          
-      </center>
-      
-  </div>
-   
-  <form method="post" action="/authen/login">
-      
-      <div class="form-group">
-          
-          <label> Username </label>
-          
-          <input name="txtName" type="text" class="form-control">
-          
-      </div>
-      
-       <div class="form-group">
-          
-          <label> Password </label>
-          
-          <input name="txtPassword" type="password" class="form-control">
-          
-      </div>
-      
-      <div class="text-center">
-          
-          <button name="login" value="Login" class="btn btn-primary">
-              
-              <i class="fa fa-sign-in"></i> Login
-              
-          </button>
-          
-      </div>
-      
-  </form>
-   
-  <center>
-      
-     <a href="/authen/register">
-         
-         <h3> Dont have account..? Register here </h3>
-         
-     </a> 
-      
-  </center>
-    
+    <div id="mess">
+        <h1>{{message}}</h1>
+        <h1 style="color: #c82333">{{error}}</h1>
+    </div>
+    <div class="box-header">
+
+        <center>
+
+            <h1 class="mt-5"> Login </h1>
+
+            <p class="lead"> Already have our account..? </p>
+
+        </center>
+
+    </div>
+
+    <form method="post" action="/authen/login">
+
+        <div class="form-group">
+
+            <label> Username </label>
+
+            <input name="txtName" type="text" class="form-control">
+
+        </div>
+
+        <div class="form-group">
+
+            <label> Password </label>
+
+            <input name="txtPassword" type="password" class="form-control">
+
+        </div>
+
+        <div class="text-center">
+
+            <button name="login" value="Login" class="btn btn-primary">
+
+                <i class="fa fa-sign-in"></i> Login
+
+            </button>
+
+        </div>
+
+    </form>
+
+    <center>
+
+        <a href="/authen/register">
+
+            <h3> Dont have account..? Register here </h3>
+
+        </a>
+
+    </center>
+
 </div>

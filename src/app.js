@@ -66,6 +66,12 @@ app.get('/', (req, res) => {
     res.render('index')
 })
 
+app.get('/error', (req, res) => {
+    let message = req.session.message;
+    let error = req.session.error;
+    res.render('erroPage', {message:message, error:error})
+})
+
 app.get('/test', (req, res) => {
     const appUser = req.session.User;
 

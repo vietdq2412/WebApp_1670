@@ -12,15 +12,19 @@ router.get('/accept', async (req, res) =>{
         return;
     }
 
-    let orderId = req.query.id;
+    if (curUser.role == 'admin'){
+        let orderId = req.query.id;
 
-    let condition = {"_id": ObjectID(orderId)};
-    let data = {
-        $set: {status : "shipping"}
+        let condition = {"_id": ObjectID(orderId)};
+        let data = {
+            $set: {status : "shipping"}
+        }
+        await updateObject(condition, ORDER_TABLE, data);
+        res.redirect("/order/orderList");
+    }else{
+        res.redirect('/error')
     }
-    await updateObject(condition, ORDER_TABLE, data);
-    res.redirect("/order/orderList");
-})
+});
 
 router.get('/detail', async (req, res) => {
     const curUser = getCurrentUserSession(req,res);
@@ -33,7 +37,7 @@ router.get('/detail', async (req, res) => {
     let condition = { "_id": ObjectID(orderId) };
     let item = await searchOne(condition, ORDER_TABLE);
 
-    res.render('order/orderDetail', {item: item})
+    res.render('order/orderDetail', {item: item, userRole:curUser.role})
 });
 
 /////////list order
@@ -54,8 +58,12 @@ router.get('/orderList', async (req, res) => {
 })
 
 router.get('/remove', async (req, res) => {
-    await remove(ORDER_TABLE);
-    res.redirect('/order/orderList');
+    if (curUser.role == 'admin'){
+        await remove(ORDER_TABLE);
+        res.redirect('/order/orderList');
+    }else{
+        res.redirect('/error')
+    }
 })
 /////////////check out
 router.get('/checkout', async (req, res) => {
@@ -133,9 +141,13 @@ router.get('/delete', async (req, res) => {
         return;
     }
 
-    const id = req.query.id;
-    await deleteObjectById(ORDER_TABLE, id);
-    res.redirect("/order/orderList")
+    if (curUser.role == 'admin'){
+        const id = req.query.id;
+        await deleteObjectById(ORDER_TABLE, id);
+        res.redirect("/order/orderList")
+    }else{
+        res.redirect('/error')
+    }
 })
 
 module.exports = router;
