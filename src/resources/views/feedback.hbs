@@ -1,0 +1,106 @@
+<style>
+    body {
+        background-color: #fff
+    }
+
+    .container {
+        background-color: #ebeff3;
+        width: 70%;
+    }
+
+    .addtxt {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        text-align: center;
+        font-size: 13px;
+        width: 60%;
+        background-color: #dbd6c8;
+        font-weight: 500;
+        border-radius: 12px;
+    }
+
+    .form-control: focus {
+        color: #000
+    }
+
+    .second {
+        width: 70%;
+        background-color: white;
+        border-radius: 12px;
+        box-shadow: 10px 10px 5px #aaaaaa
+    }
+
+    .text1 {
+        font-size: 13px;
+        font-weight: 500;
+        color: #56575b
+    }
+
+    .text2 {
+        font-size: 13px;
+        font-weight: 500;
+        margin-left: 6px;
+        color: #56575b
+    }
+
+    .text3 {
+        font-size: 13px;
+        font-weight: 500;
+        margin-right: 4px;
+        color: #e1e3e7
+    }
+
+    .text3o {
+        color: #00a5f4
+    }
+
+    .text4 {
+        font-size: 13px;
+        font-weight: 500;
+        color: hsl(300, 45%, 47%)
+    }
+
+    .text4i {
+        color: #00a5f4
+    }
+
+    .text4o {
+        color: white
+    }
+
+    .thumbup {
+        font-size: 13px;
+        font-weight: 500;
+        margin-right: 5px
+    }
+
+    .thumbupo {
+        color: #17a2b8
+    }
+
+    #sent-button {
+        border-radius: 12px;
+    }
+</style>
+
+<h1>{{user.username}}</h1>
+<div class="container justify-content-center mt-5 border-left border-right">
+    {{#each listFeedback as |fb| }}
+    <div class="d-flex justify-content-center py-2">
+        <div class="second py-2 px-2"> <span class="text1">{{fb.content}}</span>
+            <div class="d-flex justify-content-between py-1 pt-2">
+                <div><img src="https://i.imgur.com/AgAC1Is.jpg" width="18"><span class="text2">{{fb.user.username}}</span></div>
+                <div><span class="text3">Upvote?</span><span class="thumbup"><i
+                            class="fa fa-thumbs-o-up"></i></span><span class="text4">3</span></div>
+            </div>
+        </div>
+    </div>
+    {{/each}}
+
+    <form action="/feedback/sent" method="POST">
+        <div class="d-flex justify-content-center pt-3 pb-2">
+            <input type="text" name="text" placeholder="Write comment" class="form-control addtxt">
+            <button id="sent-button">Send</button>
+        </div>
+    </form>
+</div>
