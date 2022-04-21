@@ -116,8 +116,6 @@ async function checkUserRole(username, password){
 function getCurrentUserSession(req,res){
     const curUser = req.session.User;
     if (!curUser){
-        let messageerror = 'please login first!';
-        res.render('login', {message:messageerror});
         return null;
     }else {
         req.session.User = curUser;

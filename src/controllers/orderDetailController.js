@@ -8,7 +8,8 @@ const router = express.Router()
 router.get('/cart', async (req, res) => {
     const curUser = getCurrentUserSession(req,res);
     if (!curUser){
-        res.render('login', {message: 'please login first!'});
+        req.session.error = "please login first!";
+        res.redirect("/authen/login");
         return;
     }
 

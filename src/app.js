@@ -68,8 +68,9 @@ app.get('/', (req, res) => {
 
 app.get('/error', (req, res) => {
     let message = req.session.message;
-    let error = req.session.error;
-    res.render('erroPage', {message:message, error:error})
+    let err = req.session.error;
+    console.log("erro:", err);
+    res.render('erroPage', {message:message, error:err})
 })
 
 app.get('/test', (req, res) => {
