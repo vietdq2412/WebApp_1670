@@ -1,0 +1,20 @@
+<center>
+    <h1>Welcom to Profile Page</h1>
+        <table border="1">
+            <tr class="content-table-profile">
+                <th>User Name</th>
+                <th>ID</th>
+                <th>Password</th>
+                <th>Role</th>
+            </tr>
+            <tr class="content-table-profile">
+                <td>{{dataInfo.username}}</td>
+                <td>{{dataInfo._id}}</td>
+                <td>{{dataInfo.password}} </td>
+                <td>{{dataInfo.role}}</td>
+                <td><a class="btn btn-info" href="editUser/{{dataInfo._id}}">Edit</a></td>
+            </tr>
+        </table>
+</center>    
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>

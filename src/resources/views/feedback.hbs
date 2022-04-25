@@ -13,6 +13,7 @@
         padding-bottom: 10px;
         text-align: center;
         font-size: 13px;
+        height: 100%;
         width: 60%;
         background-color: #dbd6c8;
         font-weight: 500;
@@ -87,11 +88,10 @@
 <div class="container justify-content-center mt-5 border-left border-right">
     {{#each listFeedback as |fb| }}
     <div class="d-flex justify-content-center py-2">
-        <div class="second py-2 px-2"> <span class="text1">{{fb.content}}</span>
+        <div class="second py-2 px-2"> <span class="text1">{{fb.user.username}}</span>
             <div class="d-flex justify-content-between py-1 pt-2">
-                <div><img src="https://i.imgur.com/AgAC1Is.jpg" width="18"><span class="text2">{{fb.user.username}}</span></div>
-                <div><span class="text3">Upvote?</span><span class="thumbup"><i
-                            class="fa fa-thumbs-o-up"></i></span><span class="text4">3</span></div>
+                <div><span class="text2">{{fb.content}}</span></div>
+                
             </div>
         </div>
     </div>

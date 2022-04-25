@@ -67,6 +67,7 @@ app.use('/order', orderController, express.static(path.join(__dirname, '/resourc
 
 ////////////Feedback
 const feedbackController = require('./controllers/feedbackController')
+const { getUser, getProductById, updateObject, updateDocument } = require('./databaseHandler')
 app.use('/feedback', feedbackController, express.static(path.join(__dirname, '/resources/public')));
 ///////////////////
 
@@ -83,6 +84,32 @@ app.get('/error', (req, res) => {
     console.log("erro:", err);
     res.render('erroPage', {message:message, error:err,User:user})
 })
+
+app.get('/profileUser', async (req, res) => {
+    const uname = req.session["Users"]
+    const user = await getUser(uname)
+    res.render('profileUser', { dataInfo: user })
+  })
+
+app.get('/editUser/:id', async (req, res) => {
+    const idValue = req.params.id
+    const userToEdit = await getUser(idValue, "Users")
+    res.render("editUser", { user: userToEdit })
+})
+app.get('/update', async (req, res) => {
+    const id = req.body.txtOId
+    const name = req.body.txtUname
+    const uid = req.body.txtId
+    const pass = req.body.txtPassword
+    let updateValues = { $set: {
+        userName: name,
+        userId: uid,
+        password: pass,
+    } };
+    await updateDocument(id, updateValues, "Users")
+    res.redirect('/profileUser')
+})
+
 
 app.get('/test', (req, res) => {
     const appUser = req.session.User;
