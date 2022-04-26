@@ -78,8 +78,8 @@
                             <h5 class="font-weight-bold">Status</h5>
                             <h5 class="font-weight-bold" id="d">{{item.status}}</h5>
                         </div>
-                        <button class="btn btn-block btn-primary my-3 py-3" id="cancel_btn">Cancel
-                        </button>
+                        <a href="/order/delete?id={{item._id}}"><button class="btn btn-block btn-primary my-3 py-3" id="cancel_btn">Cancel
+                        </button></a>
                         <a href="/order/accept?id={{item._id}}"><button  class="btn btn-block btn-primary my-3 py-3" id="accept_btn">Delivery confirm
                         </button></a>
                     </div>
@@ -87,7 +87,6 @@
                 <input type="text" value="{{user.role}}" id="role" hidden>
                 <input type="text" value="{{item.status}}" id="status" hidden>
                 <script>
-                    let role = document.getElementById("role").value;
                     let status = document.getElementById("status").value;
 
                     if (role != "admin"){
