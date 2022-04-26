@@ -78,6 +78,12 @@ router.get('/checkout', async (req, res) => {
     }
 
     let list = req.session['cart'];
+
+    if (list.length == 0){
+        req.session.error = "your cart has no item!";
+        res.redirect("/error");
+    }
+
     let orderList = [];
     for (let key in list) {
         const qt = list[key].quantity

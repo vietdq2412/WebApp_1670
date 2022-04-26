@@ -24,7 +24,6 @@
                     <th>Price</th>
                     <th>Quantity</th>
                     <th>Total</th>
-                    <th>Remove</th>
                 </tr>
                 </thead>
                 <tbody class="align-middle">
@@ -37,10 +36,6 @@
                             {{i.quantity}}
                         </td>
                         <td class="align-middle total" id="{{i.total}}">${{i.total}}</td>
-                        <td class="align-middle">
-                            <button onclick="delete_id('{{i._id}}')"
-                                    class="btn btn-sm btn-primary"><i class="fa fa-times"></i></button>
-                        </td>
                     </tr>
                 {{!-- <h1>d{{sum 1 2}}</h1> --}}
 
@@ -79,14 +74,24 @@
                         <div class="d-flex justify-content-between mt-2">
                             <h5 class="font-weight-bold">Total</h5>
                             <h5 class="font-weight-bold">$<i id="total"></i></h5>
+                        </div><div class="d-flex justify-content-between mt-2">
+                            <h5 class="font-weight-bold">Status</h5>
+                            <h5 class="font-weight-bold">{{item.status}}</h5>
                         </div>
                         <button class="btn btn-block btn-primary my-3 py-3">Cancel
                         </button>
-                        <button class="btn btn-block btn-primary my-3 py-3" onclick="acceptOrder('{{item._id}}')">Delivery confirm
+                        <button class="btn btn-block btn-primary my-3 py-3" id="accept_btn" onclick="acceptOrder('{{item._id}}')">Delivery confirm
                         </button>
                     </div>
                 </div>
+                <input type="text" value="{{user.role}}" id="role" hidden>
                 <script>
+                    let role = document.getElementById("role").value;
+
+                    if (role != "admin"){
+                        document.getElementById("accept_btn").hidden = true;
+                    }
+
                     function acceptOrder(id){
                         alert(2)
                         window.location.href = "/order/accept?id="+id;
