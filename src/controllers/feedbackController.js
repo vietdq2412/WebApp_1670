@@ -9,7 +9,8 @@ const { insertObject, getCurrentUserSession, search, remove,
 router.get('/feedback', async (req, res) =>{
     const curUser = getCurrentUserSession(req,res);
     if (!curUser){
-        res.render('login', {error: 'please login first!'});
+        req.session.error = 'please login first!';
+        res.redirect("/authen/login");
         return;
     }
 console.log(curUser);
@@ -21,7 +22,8 @@ console.log(curUser);
 router.post('/sent',async (req, res) =>{
     const curUser = getCurrentUserSession(req,res);
     if (!curUser){
-        res.render('login', {error: 'please login first!'});
+        req.session.error = 'please login first!';
+        res.redirect("/authen/login");
         return;
     }
 
@@ -31,8 +33,8 @@ router.post('/sent',async (req, res) =>{
     let objectToInsert = {
         user: curUser,
         content: content,
-        reply : reply,
-        date: dates
+        reply : '',
+        date: date
     }
 
     await insertObject(FEEDBACK_TABLE, objectToInsert);
@@ -43,12 +45,19 @@ router.post('/sent',async (req, res) =>{
 
 
 router.get('/remove', async (req, res) =>{
-    remove(FEEDBACK_TABLE);
+    await remove(FEEDBACK_TABLE);
 
     res.redirect("/feedback/feedback");
 })
 
 router.get('/reply', async (req, res) =>{
+    const curUser = getCurrentUserSession(req,res);
+    if (!curUser){
+        req.session.error = 'please login first!';
+        res.redirect("/authen/login");
+        return;
+    }
+
     res.redirect("/feedback/feedback");
 })
 
