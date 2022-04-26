@@ -97,7 +97,6 @@ router.get('/addToCart', async (req, res) => {
     let productId = product._id;
 
     if (inputQuantity > product.quantity) {
-        console.log("over quantity!");
         req.session.erro = "Over quantity!";
         res.redirect("/product/detail?id=" + productId);
         return;
