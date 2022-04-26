@@ -76,20 +76,26 @@
                             <h5 class="font-weight-bold">$<i id="total"></i></h5>
                         </div><div class="d-flex justify-content-between mt-2">
                             <h5 class="font-weight-bold">Status</h5>
-                            <h5 class="font-weight-bold">{{item.status}}</h5>
+                            <h5 class="font-weight-bold" id="d">{{item.status}}</h5>
                         </div>
-                        <button class="btn btn-block btn-primary my-3 py-3">Cancel
+                        <button class="btn btn-block btn-primary my-3 py-3" id="cancel_btn">Cancel
                         </button>
-                        <button class="btn btn-block btn-primary my-3 py-3" id="accept_btn" onclick="acceptOrder('{{item._id}}')">Delivery confirm
+                        <button  class="btn btn-block btn-primary my-3 py-3" id="accept_btn" onclick="acceptOrder('{{item._id}}')">Delivery confirm
                         </button>
                     </div>
                 </div>
                 <input type="text" value="{{user.role}}" id="role" hidden>
+                <input type="text" value="{{item.status}}" id="status" hidden>
                 <script>
                     let role = document.getElementById("role").value;
+                    let status = document.getElementById("status").value;
 
                     if (role != "admin"){
                         document.getElementById("accept_btn").hidden = true;
+                    }
+
+                    if (status == "cancel"){
+                        document.getElementById("cancel_btn").disabled = true;
                     }
 
                     function acceptOrder(id){

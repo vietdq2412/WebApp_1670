@@ -1,4 +1,19 @@
+<style>
+    .Filter-btn{
+        width: 150px;
+    }
+</style>
 
+<table>
+    <tr>
+        <th>Find by status: </th>
+        <th><a href="/order/orderList?status=order"><button class="Filter-btn">Order</button></a></th>
+        <th><a href="/order/orderList?status=cancel_request"><button class="Filter-btn">Cancel request</button></a></th>
+        <th><a href="/order/orderList?status=shipping"><button class="Filter-btn">Shipping</button></a></th>
+        <th><a href="/order/orderList?status=done"><button class="Filter-btn">Complete</button></a></th>
+        <th><a href="/order/orderList?status=cancel"><button class="Filter-btn">Cancel</button></a></th>
+    </tr>
+</table>
 <table class="table table-striped">
     <thead>
     <tr>
@@ -8,9 +23,6 @@
         <th>Order date</th>
         <th>Status</th>
         <th>Detail</th>
-        <th>Cancel</th>
-
-
     </tr>
     </thead>
     <tbody>
@@ -23,22 +35,16 @@
             <td onload="formatDate(this)">{{date}}</td>
             <td>{{status}}</td>
             <td><a href="/order/detail?id={{_id}}">Detail</a></td>
-            <td class="align-middle" style="text-align: center">
-                <button onclick="delete_id('{{_id}}')" class="btn btn-sm btn-primary" style="margin-right: 20%">
-                    <i class="fa fa-times"></i></button>
-            </td>
         </tr>
     {{/each}}
     </tbody>
 </table>
-<input type="text" value="{{userRole}}" disabled>
+<input type="text" value="{{user.role}}" disabled>
 <script>
     function formatDate() {
         alert(1)
         let date = this.value;
-        date = new Date(date);
 
-        console.log(date);
     }
 
     function delete_id(id) {
