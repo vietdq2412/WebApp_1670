@@ -15,7 +15,7 @@
             <div class="d-inline-flex align-items-center">
                     <a href="/user/" class="navbar-brand d-flex align-items-center">
                     <strong>{{user.username}}</strong>
-                        <input type="hidden" value="{{user.username}}" id="user">
+                        <input type="hidden" value="{{user.role}}" id="user">
 
                     <span class="text-muted px-2">  </span>
                     <a class="text-dark" href="/authen/login" id="login">Login</a>
@@ -23,8 +23,8 @@
                         <script>
                             let loginTag = document.getElementById('login');
                             let logout = document.getElementById('logout');
-                            let isLogin = document.getElementById('user').value;
-                            if (isLogin != ''){
+                            let role = document.getElementById('user').value;
+                            if (role != ''){
                                 loginTag.hidden = true;
                             }else {
                                 logout.hidden = true;
