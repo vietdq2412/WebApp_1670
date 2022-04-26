@@ -51,16 +51,18 @@ router.get('/orderList', async (req, res) => {
         return;
     }
     let orders;
+    let status = req.query.status;
+    let condition = {'status':status}
+    if (!status){
+        condition = '';
+    }
     if (curUser.role == 'admin'){
-        let status = req.query.status;
-        let condition = {'status':status}
-        if (!status){
-            condition = '';
-        }
-        console.log("con",condition)
         orders = await search(condition, ORDER_TABLE);
     }else {
-        let condition = { "userId": curUser.userId };
+        condition = {"userId": curUser.userId, "status": status}
+        if (!status){
+            condition = { "userId": curUser.userId };
+        }
         orders = await search(condition, ORDER_TABLE);
     }
     res.render('order/orderList', { orders: orders, user:curUser });

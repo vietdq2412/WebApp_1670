@@ -80,8 +80,8 @@
                         </div>
                         <button class="btn btn-block btn-primary my-3 py-3" id="cancel_btn">Cancel
                         </button>
-                        <button  class="btn btn-block btn-primary my-3 py-3" id="accept_btn" onclick="acceptOrder('{{item._id}}')">Delivery confirm
-                        </button>
+                        <a href="/order/accept?id={{item._id}}"><button  class="btn btn-block btn-primary my-3 py-3" id="accept_btn">Delivery confirm
+                        </button></a>
                     </div>
                 </div>
                 <input type="text" value="{{user.role}}" id="role" hidden>
@@ -98,17 +98,11 @@
                         document.getElementById("cancel_btn").disabled = true;
                     }
 
-                    function acceptOrder(id){
-                        alert(2)
-                        window.location.href = "/order/accept?id="+id;
-                    }
                     function getTotal() {
                         let itemTotal = document.getElementsByClassName('total');
                         let total = 0;
                         for (let i = 0; i < itemTotal.length; i++) {
                             total += parseInt(itemTotal[i].id);
-                            console.log(total)
-                            console.log(itemTotal[i].id)
                         }
                         document.getElementById('total').innerText = total;
                     }
