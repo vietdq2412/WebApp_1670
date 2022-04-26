@@ -22,7 +22,7 @@ router.get('/', async (req, res) => {
         return;
     }else{
         const products = await search('', PRODUCT_TABLE);
-        res.render('product/listProducts', { products: products})
+        res.render('product/listProducts', { products: products, user:curUser})
     }
 })
 ///show products
@@ -75,6 +75,7 @@ router.post('/add', async (req, res) => {
 })
 ///edit 
 router.get('/edit', async (req, res) => {
+    let curUser = req.session.User;
     const id = req.query.id
     var ObjectID = require('mongodb').ObjectID;
     const condition = {"_id":ObjectID(id)};
@@ -108,6 +109,7 @@ router.get('/delete', async(req,res)=>{
 
 ///detail
 router.get('/detail', async (req, res) => {
+    let curUser = req.session.User;
     const id = req.query.id;
     var ObjectID = require('mongodb').ObjectID;
     const condition = { "_id": ObjectID(id) };
@@ -120,6 +122,8 @@ router.get('/detail', async (req, res) => {
 
 /////search
 router.get('/search', async (req, res) => {
+    let curUser = req.session.User;
+
     const content = req.query.content;
     const condition = { "name":  new RegExp("^.*"+content+".*$")}
     const product = await search(condition, PRODUCT_TABLE);
@@ -131,6 +135,7 @@ router.get('/search', async (req, res) => {
 /////search
 router.get('/sort', async (req, res) => {
     let sortBy = req.query.by;
+    let curUser = req.session.User;
 
     const content = req.query.content;
     let sortCondition = '';
