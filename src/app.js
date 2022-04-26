@@ -74,7 +74,8 @@ app.use('/feedback', feedbackController, express.static(path.join(__dirname, '/r
 
 app.get('/', (req, res) => {
     let user = req.session.User;
-    res.render('index', {user:user})
+    res.redirect('/product/shop');
+    //res.render('index', {user:user})
 })
 
 app.get('/error', (req, res) => {

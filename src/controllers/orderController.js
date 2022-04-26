@@ -155,7 +155,12 @@ router.get('/delete', async (req, res) => {
 
     if (curUser.role == 'admin'){
         const id = req.query.id;
-        await deleteObjectById(ORDER_TABLE, id);
+        let condition = {'_id' : id}
+        let data = {
+            $set: {status: "cancel"}
+        }
+        console.log("delete")
+        await updateObject(condition, ORDER_TABLE, data);
         res.redirect("/order/orderList")
     }else{
         req.session.error = "you do not have permission to access this page!"
