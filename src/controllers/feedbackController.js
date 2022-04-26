@@ -31,7 +31,8 @@ router.post('/sent',async (req, res) =>{
     let objectToInsert = {
         user: curUser,
         content: content,
-        date: date
+        reply : reply,
+        date: dates
     }
 
     await insertObject(FEEDBACK_TABLE, objectToInsert);
@@ -47,4 +48,17 @@ router.get('/remove', async (req, res) =>{
     res.redirect("/feedback/feedback");
 })
 
+router.get('/reply', async (req, res) =>{
+    res.redirect("/feedback/feedback");
+})
+
+router.post('/reply',async(req,res)=>{
+    const id = req.body.ctid
+    const reply = req.body.reply
+    const UpdateValue = {$push: {reply:{  content: reply}} }
+    console.log(UpdateValue)
+    const update = await dbHandler.updateDocument(id,UpdateValue,"Feedback")
+    console.log(update)
+    res.redirect('/feedback/feedback')
+})
 module.exports = router;

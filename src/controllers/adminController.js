@@ -15,4 +15,13 @@ router.get('/', (req, res) => {
     res.render('admin/adminPage', {user:curUser})
 })
 
-module.exports = router;
+router.post('/replyfeedback',async(req,res)=>{
+    const id = req.body.ctid
+    const reply = req.body.reply
+    const UpdateValue = {$push: {reply:{  content: reply}} }
+    console.log(UpdateValue)
+    const update = await dbHandler.updateDocument(id,UpdateValue,"Feedback")
+    console.log(update)
+    res.redirect('/feedback/feedback')
+})
+module.exports = router
