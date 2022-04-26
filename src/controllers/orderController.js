@@ -52,12 +52,18 @@ router.get('/orderList', async (req, res) => {
     }
     let orders;
     if (curUser.role == 'admin'){
-        orders = await search('', ORDER_TABLE);
+        let status = req.query.status;
+        let condition = {'status':status}
+        if (!status){
+            condition = '';
+        }
+        console.log("con",condition)
+        orders = await search(condition, ORDER_TABLE);
     }else {
         let condition = { "userId": curUser.userId };
         orders = await search(condition, ORDER_TABLE);
     }
-    res.render('order/orderList_Customer', { orders: orders, user:curUser });
+    res.render('order/orderList', { orders: orders, user:curUser });
 })
 
 router.get('/remove', async (req, res) => {
@@ -78,6 +84,12 @@ router.get('/checkout', async (req, res) => {
     }
 
     let list = req.session['cart'];
+
+    if (list.length == 0){
+        req.session.error = "your cart has no item!";
+        res.redirect("/error");
+    }
+
     let orderList = [];
     for (let key in list) {
         const qt = list[key].quantity
@@ -146,14 +158,20 @@ router.get('/delete', async (req, res) => {
         res.redirect("/authen/login");
         return;
     }
-
+    const id = req.query.id;
+    let condition = {"_id" : ObjectID(id)}
     if (curUser.role == 'admin'){
-        const id = req.query.id;
-        await deleteObjectById(ORDER_TABLE, id);
+        let data = {
+            $set: {status: "cancel"}
+        }
+        await updateObject(condition, ORDER_TABLE, data);
         res.redirect("/order/orderList")
     }else{
-        req.session.error = "you do not have permission to access this page!"
-        res.redirect('/error')
+        let data = {
+            $set: {status: "request_cancel"}
+        }
+        await updateObject(condition, ORDER_TABLE, data);
+        res.redirect("/order/orderList")
     }
 })
 

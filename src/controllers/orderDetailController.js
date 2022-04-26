@@ -36,7 +36,7 @@ router.get('/cart', async (req, res) => {
     if (dict.length <= 0) {
         req.session.message = "Cart is empty!";
     }
-    let message = "Cart is empty!";
+    let message = req.session.message;
     res.render('order/cart', {orderList: orderDetailList, subTotal: subTotal, message: message});
 })
 
