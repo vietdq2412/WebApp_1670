@@ -20,9 +20,6 @@
         border-radius: 12px;
     }
 
-    .form-control: focus {
-        color: #000
-    }
 
     .second {
         width: 70%;
@@ -48,7 +45,7 @@
         font-size: 13px;
         font-weight: 500;
         margin-right: 4px;
-        color: #e1e3e7
+        color: #3873a6
     }
 
     .text3o {
@@ -79,8 +76,18 @@
         color: #17a2b8
     }
 
-    #sent-button {
+    .sent-button {
         border-radius: 12px;
+    }
+
+    .reply{
+        font-size: 10px;
+        font-weight: 300;
+        color: #110000
+    }
+
+    .repInput{
+        margin-top: -20px;
     }
 </style>
 
@@ -90,16 +97,48 @@
         <div class="second py-2 px-2"> <span class="text1">{{fb.user.username}}</span>
             <div class="d-flex justify-content-between py-1 pt-2">
                 <div><span class="text2">{{fb.content}}</span></div>
-                
+                <div><button class="text3" onclick="reply('{{fb._id}}')">Reply</button></div>
+            </div>
+
+            <div class="reply" id="rep{{fb._id}}" hidden><hr>
+                <div class="d-flex justify-content-center pt-3 pb-2 repInput">
+
+                    <input id="reply-input"  style="height: 20px" type="text" name="text" placeholder="Write reply" class="form-control addtxt">
+                    <a href="/feedback/reply" id="reply-btn"><button class="sent-button">Send</button></a>
+
+                </div>
+                <span class="text1">Admin:</span>
+                <div>
+                    <div><span class="text2">asdafasfasdasdsd</span></div>
+                </div>
             </div>
         </div>
+
     </div>
     {{/each}}
+    <script>
+        let repInput = document.getElementById('reply-btn');
+        if (role != 'admin'){
+            repInput.hidden = true
+        }
 
+        function reply(id){
+            let repTag = document.getElementById(id)
+
+            let contentID = 'rep'+id;
+            let repContent = document.getElementById(contentID);
+
+            if (repContent.hidden == true){
+                repContent.hidden = false;
+            }else {
+                repContent.hidden = true;
+            }
+        }
+    </script>
     <form action="/feedback/sent" method="POST">
         <div class="d-flex justify-content-center pt-3 pb-2">
             <input type="text" name="text" placeholder="Write comment" class="form-control addtxt">
-            <button id="sent-button">Send</button>
+            <button class="sent-button">Send</button>
         </div>
     </form>
 </div>
