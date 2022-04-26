@@ -22,13 +22,14 @@ router.get('/', async (req, res) => {
         return;
     }else{
         const products = await search('', PRODUCT_TABLE);
-        res.render('product/listProducts', { products: products})
+        res.render('product/listProducts', { products: products, user:curUser})
     }
 })
 ///show products
 router.get('/shop',async(req,res)=>{
     const products = await search('',PRODUCT_TABLE);
-    res.render('shop',{products: products})
+    let curUser = req.session.User
+    res.render('shop',{products: products, user:curUser})
 })
 ///add product
 router.get('/add', async (req, res) => {
@@ -46,7 +47,7 @@ router.get('/add', async (req, res) => {
         return;
     }else{
     const categories = await search('', CATEGORY_TABLE);
-    res.render('product/addProductForm', {categories:categories})
+    res.render('product/addProductForm', {categories:categories, user:curUser})
     }
 })
 
@@ -74,6 +75,7 @@ router.post('/add', async (req, res) => {
 })
 ///edit 
 router.get('/edit', async (req, res) => {
+    let curUser = req.session.User;
     const id = req.query.id
     var ObjectID = require('mongodb').ObjectID;
     const condition = {"_id":ObjectID(id)};
@@ -81,7 +83,7 @@ router.get('/edit', async (req, res) => {
     const product = await searchOne(condition, PRODUCT_TABLE);
 
     const categories = await search('', CATEGORY_TABLE);
-    res.render('product/editProductForm', {product:product, categories})
+    res.render('product/editProductForm', {product:product, categories, user:curUser})
 })
 
 router.post('/edit', async(req,res)=> {
@@ -107,43 +109,43 @@ router.get('/delete', async(req,res)=>{
 
 ///detail
 router.get('/detail', async (req, res) => {
+    let curUser = req.session.User;
     const id = req.query.id;
     var ObjectID = require('mongodb').ObjectID;
     const condition = { "_id": ObjectID(id) };
     let message = req.session.erro;
     delete req.session.erro;
     const product = await searchOne(condition, PRODUCT_TABLE);
-    res.render('product/detail', {product:product, message:message})
+    res.render('product/detail', {product:product, message:message, user:curUser})
 })
 
 
 /////search
 router.get('/search', async (req, res) => {
+    let curUser = req.session.User;
+
     const content = req.query.content;
     const condition = { "name":  new RegExp("^.*"+content+".*$")}
     const product = await search(condition, PRODUCT_TABLE);
 
-    res.render('shop', {products:product})
+    res.render('shop', {products:product, user:curUser})
 })
 
 ///sort 
 /////search
 router.get('/sort', async (req, res) => {
-
     let sortBy = req.query.by;
+    let curUser = req.session.User;
 
     const content = req.query.content;
-    console.log(sortBy);
     let sortCondition = '';
     if(sortBy == 'name'){
          sortCondition = { 'name': 1}
     }else{
         sortCondition = {'price':1}
     }
-    console.log(content)
     const product = await sort('',sortCondition, PRODUCT_TABLE);
 
-    console.log('pro: ', product)
-    res.render('shop', {products:product})
+    res.render('shop', {products:product, user:curUser})
 })
 module.exports = router;

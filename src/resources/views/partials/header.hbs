@@ -15,18 +15,21 @@
             <div class="d-inline-flex align-items-center">
                     <a href="/user/" class="navbar-brand d-flex align-items-center">
                     <strong>{{user.username}}</strong>
-                    <script>
-                       let loginTag = document.getElementById('login');
-                    </script>
-                    <span class="text-muted px-2">  </span>
-                    <a class="text-dark" onclick="loginForm()" id="login">Login</a>
-                    <script>
-                        function loginForm(){
-                            window.location.href = '/authen/login'
-                        }
+                        <input type="hidden" value="{{user.role}}" id="user">
 
-                    </script>
-        
+                    <span class="text-muted px-2">  </span>
+                    <a class="text-dark" href="/authen/login" id="login">Login</a>
+                    <a class="text-dark" href="/authen/logout" id="logout">Logout</a>
+                        <script>
+                            let loginTag = document.getElementById('login');
+                            let logout = document.getElementById('logout');
+                            let role = document.getElementById('user').value;
+                            if (role != ''){
+                                loginTag.hidden = true;
+                            }else {
+                                logout.hidden = true;
+                            }
+                        </script>
                 {{!-- <a class="text-dark px-2" href="">
                     <i class="fab fa-twitter"></i>
                 </a>

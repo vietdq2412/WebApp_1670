@@ -37,7 +37,7 @@ router.get('/cart', async (req, res) => {
         req.session.message = "Cart is empty!";
     }
     let message = req.session.message;
-    res.render('order/cart', {orderList: orderDetailList, subTotal: subTotal, message: message});
+    res.render('order/cart', {orderList: orderDetailList, subTotal: subTotal, message: message, user:curUser});
 })
 
 router.get('/delete', async (req, res) => {

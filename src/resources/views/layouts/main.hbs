@@ -86,17 +86,24 @@
                                 <a href="/feedback/feedback" class="dropdown-item">Feedback</a>
                             </div>
                         </div>
-                        <a href="/admin" class="nav-item nav-link">Admin</a>
+                        <a href="/admin" class="nav-item nav-link" id="admin-link">Admin</a>
                     </div>
                     <div class="navbar-nav ml-auto py-0">
-                        <a href="/authen/login" class="nav-item nav-link">Login</a>
-                        <a href="" class="nav-item nav-link">Register</a>
+                        ♥
                     </div>
                 </div>
             </nav>
         </div>
     </div>
 </div>
+
+<script>
+   let adminLink =  document.getElementById('admin-link')
+   adminLink.hidden = false;
+   if (role != 'admin'){
+       adminLink.hidden = true;
+   }
+</script>
 <!-- Navbar End -->
 {{{body}}}
 
