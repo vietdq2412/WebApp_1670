@@ -65,16 +65,24 @@ const orderController = require('./controllers/orderController')
 app.use('/order', orderController, express.static(path.join(__dirname, '/resources/public')));
 ///////////////////
 
+////////////Feedback
+const feedbackController = require('./controllers/feedbackController')
+const { getUser, getProductById, updateObject, updateDocument } = require('./databaseHandler')
+app.use('/feedback', feedbackController, express.static(path.join(__dirname, '/resources/public')));
+///////////////////
+
 
 app.get('/', (req, res) => {
-    res.render('index')
+    let user = req.session.User;
+    res.render('index', {user:user})
 })
 
 app.get('/error', (req, res) => {
     let message = req.session.message;
     let err = req.session.error;
+    let user = req.session.User;
     console.log("erro:", err);
-    res.render('erroPage', {message:message, error:err})
+    res.render('erroPage', {message:message, error:err,User:user})
 })
 
 app.get('/test', (req, res) => {

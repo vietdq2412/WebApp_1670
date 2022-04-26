@@ -8,7 +8,8 @@ const router = express.Router()
 router.get('/accept', async (req, res) =>{
     const curUser = getCurrentUserSession(req,res);
     if (!curUser){
-        res.render('login', {error: 'please login first!'});
+        req.session.error = 'please login first!';
+        res.redirect("/authen/login");
         return;
     }
 
@@ -30,22 +31,23 @@ router.get('/accept', async (req, res) =>{
 router.get('/detail', async (req, res) => {
     const curUser = getCurrentUserSession(req,res);
     if (!curUser){
-        res.render('login', {error: 'please login first!'});
+        req.session.error = 'please login first!';
+        res.redirect("/authen/login");
         return;
     }
-    let ObjectID = require('mongodb').ObjectID;
     const orderId = req.query.id;
     let condition = { "_id": ObjectID(orderId) };
     let item = await searchOne(condition, ORDER_TABLE);
 
-    res.render('order/orderDetail', {item: item, userRole:curUser.role})
+    res.render('order/orderDetail', {item: item, user:curUser})
 });
 
 /////////list order
 router.get('/orderList', async (req, res) => {
     const curUser = getCurrentUserSession(req,res);
     if (!curUser){
-        res.render('login', {error: 'please login first!'});
+        req.session.error = 'please login first!';
+        res.redirect("/authen/login");
         return;
     }
     let orders;
@@ -55,7 +57,7 @@ router.get('/orderList', async (req, res) => {
         let condition = { "userId": curUser.userId };
         orders = await search(condition, ORDER_TABLE);
     }
-    res.render('order/orderList_Customer', { orders: orders, userRole: curUser.role });
+    res.render('order/orderList_Customer', { orders: orders, user:curUser });
 })
 
 router.get('/remove', async (req, res) => {
@@ -70,7 +72,8 @@ router.get('/remove', async (req, res) => {
 router.get('/checkout', async (req, res) => {
     const curUser = getCurrentUserSession(req,res);
     if (!curUser){
-        res.render('login', {error: 'please login first!'});
+        req.session.error = 'please login first!';
+        res.redirect("/authen/login");
         return;
     }
 
@@ -86,13 +89,14 @@ router.get('/checkout', async (req, res) => {
         })
     }
     let total = req.query.total;
-    res.render('order/checkout', { orderList: orderList, total: total });
+    res.render('order/checkout', { orderList: orderList, total: total, user:curUser });
 })
 
 router.post('/checkout', async (req, res) => {
     const curUser = getCurrentUserSession(req,res);
     if (!curUser){
-        res.render('login', {message: 'please login first!'});
+        req.session.error = 'please login first!';
+        res.redirect("/authen/login");
         return;
     }
 
@@ -138,7 +142,8 @@ router.post('/checkout', async (req, res) => {
 router.get('/delete', async (req, res) => {
     const curUser = getCurrentUserSession(req,res);
     if (!curUser){
-        res.render('login', {message: 'please login first!'});
+        req.session.error = 'please login first!';
+        res.redirect("/authen/login");
         return;
     }
 

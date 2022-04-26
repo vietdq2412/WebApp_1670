@@ -1,0 +1,13 @@
+<form action="/app/editUser" method="post"></form>
+    <input type="hidden" name="txtOId" value="{{user._id}}">
+            Username : <input type="text" class="form-control1" name="txtUname" value="{{user.userName}}">
+            <Br>
+            User Id : <input type="text" class="form-control1" name="txtId" value="{{user.userId}}">
+            <br />
+            Password : <input type="password" class="form-control1" name="txtPassword" value="{{user.password}}">
+            <br />
+            <Br>
+            <input type="submit" class="btn btn-info mt-2" value="Update">
+</form>
+<!-- Back to Top -->
+    <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>

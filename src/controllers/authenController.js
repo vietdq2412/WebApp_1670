@@ -4,7 +4,7 @@ const router = express.Router()
 const { insertObject, getUser, USERTABLE } = require('../databaseHandler')
 
 ///////////Login
-router.get('/login',  (req, res) => {
+router.get('/login', (req, res) => {
     let error = req.session.error;
     res.render('login', {layout: 'layout_signin', error:error})
 })
@@ -18,7 +18,7 @@ router.post('/login', async (req, res) => {
         res.end('login invalid!');
     } else {
         req.session["User"] = {
-            userpass: password,
+            userId: user._id,
             username: username,
             role: user.role
         }

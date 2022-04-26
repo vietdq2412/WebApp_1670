@@ -10,7 +10,8 @@ const { insertObject, checkUserRole, sort, getCurrentUserSession,
 router.get('/', async (req, res) => {
     const curUser = getCurrentUserSession(req,res);
     if (!curUser){
-        res.render('test', {message: 'please login first!'});
+        req.session.error = 'please login first!';
+        res.redirect("/authen/login");
         return;
     }
 
@@ -33,7 +34,8 @@ router.get('/shop',async(req,res)=>{
 router.get('/add', async (req, res) => {
     const curUser = getCurrentUserSession(req,res);
     if (!curUser){
-        res.render('test', {message: 'please login first!'});
+        req.session.error = 'please login first!';
+        res.redirect("/authen/login");
         return;
     }
 

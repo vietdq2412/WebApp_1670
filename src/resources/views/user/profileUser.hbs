@@ -1,0 +1,24 @@
+<center>
+    <h1>Welcom to Profile Page</h1>
+    <table border="1">
+        <tr class="content-table-profile">
+            <th>User Name</th>
+            <th>ID</th>
+            <th>Password</th>
+            <th>Role</th>
+            <th>Edit</th>
+        </tr>
+        {{#each listUser as |user| }}
+            <tr class="content-table-profile">
+                <td>{{user.username}}</td>
+                <td>{{user._id}}</td>
+                <td>{{user.password}} </td>
+                <td>{{user.role}}</td>
+                <td><a class="btn btn-info" href="editUser/{{user._id}}">Edit</a></td>
+            </tr>
+        {{/each}}
+
+    </table>
+</center>
+<!-- Back to Top -->
+<a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>

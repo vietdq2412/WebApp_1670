@@ -56,6 +56,10 @@ async function getUser(username, password){
         return user;
     }
 }
+async function updateDocument(id, updateValues,collectionName){
+    const dbo = await getDB();
+    await dbo.collection(collectionName).updateOne({_id:ObjectId(id)},updateValues)
+}
 
 async function deleteObjectById(collectionName,id){
     let client = await MongoClient.connect(URL)
@@ -127,11 +131,13 @@ const USERTABLE = 'Users';
 const CATEGORY_TABLE = 'Category';
 const PRODUCT_TABLE = 'Product';
 const ORDER_TABLE = 'Order';
+const FEEDBACK_TABLE = 'Feedback';
 const ORDERDETAIL_TABLE = 'OrderDetail';
 
 
 
-module.exports = {insertObject, checkUserRole, getUser, search , getProduct , updateProduct , deleteProductById, deleteObjectById, updateObject,
+module.exports = {updateDocument,insertObject, checkUserRole, getUser, search , getProduct , updateProduct , deleteProductById, deleteObjectById, updateObject,
      getProductById ,deleteManyObjects , sort,
-     getCurrentUserSession , searchOne, remove, USERTABLE, CATEGORY_TABLE, PRODUCT_TABLE, ORDER_TABLE, ORDERDETAIL_TABLE};
+     getCurrentUserSession , searchOne, remove,
+     FEEDBACK_TABLE, USERTABLE, CATEGORY_TABLE, PRODUCT_TABLE, ORDER_TABLE, ORDERDETAIL_TABLE};
 
