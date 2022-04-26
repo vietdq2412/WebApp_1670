@@ -20,7 +20,7 @@ router.get('/profileUser', async (req, res) => {
 router.get('/editUser/:id', async (req, res) => {
     const idValue = req.params.id
     const userToEdit = await getUser(idValue, "Users")
-    res.render("editUser", { user: userToEdit })
+    res.render("user/editUser", { user: userToEdit })
 })
 router.get('/update', async (req, res) => {
     const id = req.body.txtOId
