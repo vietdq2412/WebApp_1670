@@ -1,7 +1,7 @@
 const async = require('hbs/lib/async');
 const {MongoClient,ObjectId} = require('mongodb');
 
-const URL = "mongodb+srv://ducanh1610:543694@cluster0.9rpbx.mongodb.net/test";
+const URL = "mongodb+srv://ducanh1610:543695@cluster0.9rpbx.mongodb.net/test";
 const DATABASE_NAME = "GCH0902-ApplicationDev"
 
 async function getDB(){
@@ -19,8 +19,7 @@ async function insertObject(collectionName,objectToInsert){
 async function search(condition, collectionName) {
     const dbo = await getDB();
     //const searchCondition = new RegExp(condition, 'i')
-    var results = await dbo.collection(collectionName).
-    find(condition).toArray();
+    var results = await dbo.collection(collectionName).find(condition).toArray();
     return results;
 }
 
